@@ -1,6 +1,5 @@
 # Kubernates Concepts
-## Frequently Asked Questions
-
+### Deployments
 ##### 1. What are Kubernates native deployments?
 **Answer:**  Kubernetes natively supports two deployment strategies via the Deployment resource. 
 1. Recreate - It is a clean deployment, terminate all the pods and recreate it.
