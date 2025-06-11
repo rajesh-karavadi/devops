@@ -13,8 +13,14 @@ We can implement manually Blue-Green, Canary, A/B, Shadow deployments.
 ##### 3. What is the difference between Rollout and Canary Deployment?
 **Answer:** Rolling update gradually replaces all old pods with new ones in batches, while canary deployment slowly shifts a small portion of traffic to the new version to test before full rollout.
 ##### 4. How Rolling Update works? 
-**Answer:** when there are 3 replicas, at any time 2 pods will be available as per the below configuration. 
+**Answer:** When there are 3 replicas, at any time 2 pods will be available as per the below configuration. 
  ~~~~ 
  rollingUpdate:
     maxSurge: 1 # Extra pods can be created during rolling update
     maxUnavailable: 1 # At max, one pod will be unavailable during rolling udpate.
+~~~~
+### Network Policies
+##### 1. Can we enforce Network Policies from Pod to Service?
+**Answer:** Network Policies apply specifically to **pod-to-pod communication** within a Kubernetes cluster. You can manage **incoming traffic** to pods using **Ingress rules** and **outgoing traffic** from pods using **Egress rules**.
+
+
