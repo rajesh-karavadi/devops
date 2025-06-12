@@ -10,7 +10,7 @@ We can implement manually Blue-Green, Canary, A/B, Shadow deployments.
 * Two separate Deployments. For example, blueapp and greenapp.
 * Service routes traffic to one at a time.
 * Switch traffic after verifying the new version.
-##### 3. What is the difference between Rollout and Canary Deployment?
+##### 3. What is the difference between Rolling Update and Canary Deployment?
 **Answer:** Rolling update gradually replaces all old pods with new ones in batches, while canary deployment slowly shifts a small portion of traffic to the new version to test before full rollout.
 ##### 4. How Rolling Update works? 
 **Answer:** When there are 3 replicas, at any time 2 pods will be available as per the below configuration. 
