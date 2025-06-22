@@ -39,9 +39,9 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/java-docker-app:$GITHUB_SHA ./java-docker-app
+          docker build -t us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/jjava-images/java-docker-app:$GITHUB_SHA .
 
-      - name: Push image to Google Container Registry
+      - name: Push Docker image
         run: |
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/java-docker-app:$GITHUB_SHA
+          docker push us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/java-docker-app:$GITHUB_SHA
 
