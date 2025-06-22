@@ -48,3 +48,10 @@ jobs:
         run: |
           docker push us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/java-docker-app:$GITHUB_SHA
 
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v1
+        with:
+          service: java-docker-app
+          image: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/java-docker-app:$GITHUB_SHA
+          region: us-east1
+
