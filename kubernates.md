@@ -23,4 +23,32 @@ We can implement manually Blue-Green, Canary, A/B, Shadow deployments.
 ##### 1. Can we enforce Network Policies from Pod to Service?
 **Answer:** Network Policies apply specifically to **pod-to-pod communication** within a Kubernetes cluster. You can manage **incoming traffic** to pods using **Ingress rules** and **outgoing traffic** from pods using **Egress rules**.
 
+### Advanced
+##### 1. How does the Kubernetes Scheduler Work?
+**Answer:** Kubernetes Scheduler is a core control plane component responsible for assigning Pods to Nodes.
+
+When a new Pod is created (e.g., via Deployment), it is unscheduled — meaning it has no nodeName. The scheduler's job is to:
+
+* Watch for unscheduled pods
+* Find the best node for each pod
+* Bind the pod to that node by updating the PodSpec.nodeName
+
+##### 2. How Kubernetes Finds the Best Node for a Pod?
+**Answer:**
+Kubernetes finds the best node by first filtering out all nodes that don’t meet hard requirements (like resources or 
+labels), and then scoring the remaining nodes based on configurable heuristics. The node with the highest score is 
+chosen, and the Pod is bound to it.
+
+1. *Filtering Phase* to eliminate all nodes that are not suitable.
+   CPU and Memory Request, Volume requests,
+2. *Scoring Phase* 
+   3. Least Requested Resources (to pack efficiently)
+   4. Balanced Resource Allocation (CPU/memory balance)
+   5. Pod Affinity/Anti-Affinity Scores 
+   6. Topology Spread (across zones, racks, nodes)
+   7. Custom Plugins (e.g., for GPU scheduling, biz rules)
+
+   Each node is given a weight-based score from 0 to 100. If multiple nodes have the same score, K8s breaks ties randomly to spread load.
+
+
 
