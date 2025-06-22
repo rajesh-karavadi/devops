@@ -41,12 +41,12 @@ chosen, and the Pod is bound to it.
 
 1. *Filtering Phase* to eliminate all nodes that are not suitable.
    CPU and Memory Request, Volume requests,
-2. *Scoring Phase* 
-   3. Least Requested Resources (to pack efficiently)
-   4. Balanced Resource Allocation (CPU/memory balance)
-   5. Pod Affinity/Anti-Affinity Scores 
-   6. Topology Spread (across zones, racks, nodes)
-   7. Custom Plugins (e.g., for GPU scheduling, biz rules)
+2. *Scoring Phase* <br>
+   3. Least Requested Resources (to pack efficiently) <br>
+   4. Balanced Resource Allocation (CPU/memory balance) <br>
+   5. Pod Affinity/Anti-Affinity Scores <br>
+   6. Topology Spread (across zones, racks, nodes) <br>
+   7. Custom Plugins (e.g., for GPU scheduling, biz rules) <br>
 
    Each node is given a weight-based score from 0 to 100. If multiple nodes have the same score, K8s breaks ties randomly to spread load.
 
