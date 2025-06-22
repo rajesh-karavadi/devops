@@ -34,8 +34,11 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
+      - name: Who am I (check auth)
+        run: gcloud auth list
+
       - name: Set up Docker to use gcloud as a credential helper
-        run: gcloud auth configure-docker
+        run: gcloud auth configure-docker us-east1-docker.pkg.dev
 
       - name: Build Docker image
         run: |
