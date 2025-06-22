@@ -42,16 +42,16 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/java-docker-app:$GITHUB_SHA ./java-docker-app
+          docker build -t us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/java-docker-app:${{ github.sha }} ./java-docker-app
 
       - name: Push Docker image
         run: |
-          docker push us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/java-docker-app:$GITHUB_SHA
+          docker push us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/java-docker-app:${{ github.sha }}
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
         with:
           service: java-docker-app
-          image: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/java-docker-app:$GITHUB_SHA
+          image: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/java-docker-app:${{ github.sha }}
           region: us-east1
 
