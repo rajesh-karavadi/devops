@@ -42,13 +42,55 @@ chosen, and the Pod is bound to it.
 1. *Filtering Phase* to eliminate all nodes that are not suitable.
    CPU and Memory Request, Volume requests,
 2. *Scoring Phase* <br>
-   3. Least Requested Resources (to pack efficiently) <br>
-   4. Balanced Resource Allocation (CPU/memory balance) <br>
-   5. Pod Affinity/Anti-Affinity Scores <br>
-   6. Topology Spread (across zones, racks, nodes) <br>
-   7. Custom Plugins (e.g., for GPU scheduling, biz rules) <br>
+* Least Requested Resources (to pack efficiently) <br>
+* Balanced Resource Allocation (CPU/memory balance) <br>
+* Pod Affinity/Anti-Affinity Scores <br>
+* Topology Spread (across zones, racks, nodes) <br>
+* Custom Plugins (e.g., for GPU scheduling, biz rules) <br>
 
-   Each node is given a weight-based score from 0 to 100. If multiple nodes have the same score, K8s breaks ties randomly to spread load.
+**Each node is given a weight-based score from 0 to 100. If multiple nodes have the same score, K8s breaks ties randomly to spread load.**
 
+##### 3. A pod is stuck in CrashLoopBackOff. How would you investigate?
+**Answer:** If a pod is stuck in CrashLoopBackOff, I start by checking the pod’s events and logs using kubectl describe 
+and kubectl logs. I investigate for common causes like application errors, resource constraints (e.g., OOMKilled), 
+liveness probe failures, or configuration issues. Based on findings, I might adjust resource limits, probe settings, or 
+fix application/config bugs. For deeper debugging, I may override the command to start an interactive shell and explore 
+the container manually.
 
+##### 4. Your app is running fine, but requests are failing intermittently. What do you check?
+**Answer:** When requests are failing intermittently despite the app running, I begin by checking pod logs and metrics
+to look for timeouts, resource limits, or probe issues. I then inspect readiness and liveness probes, DNS and network 
+behavior, and traffic routing via load balancers or ingress. I also evaluate whether downstream services (like DBs or 
+external APIs) are causing the flakiness. Using tools like kubectl logs, top, and metrics dashboards, I narrow down the
+root cause.
+
+##### 5. You have a pod that must not be scheduled on the same node as another pod. How do you configure this?
+**Answer** Use anti-affinity rules.
+
+##### 6. What Are Affinity Rules in Kubernetes?
+**Answer** Affinity rules in Kubernetes are scheduling rules that control how Pods are placed on nodes based on certain
+conditions.
+
+They help ensure:
+* Pods run together or separately
+* Pods are placed on specific types of nodes
+* You optimize for performance, fault tolerance, or cost
+
+| Type                  | Description                                                                     |
+| --------------------- | ------------------------------------------------------------------------------- |
+| **Node Affinity**     | Controls which **nodes** a pod can be scheduled on (based on node labels)       |
+| **Pod Affinity**      | Encourages pod to be scheduled on a node **with specific pods already running** |
+| **Pod Anti-Affinity** | Encourages pod to be scheduled **away from specific pods** (on different nodes) |
+
+Pod Affinity Example
+Use case: Place frontend pods on the same node as backend pods (to reduce latency)
+~~~~
+affinity:
+podAffinity:
+requiredDuringSchedulingIgnoredDuringExecution:
+- labelSelector:
+matchLabels:
+app: backend
+topologyKey: "kubernetes.io/hostname"
+~~~~
 
