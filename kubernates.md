@@ -1,11 +1,13 @@
-# Kubernates Concepts
+# Kubernetes Concepts
 ### Deployments
-##### 1. What are Kubernates native deployments?
+##### 1. What are Kubernetes native deployments?
+
 **Answer:**  Kubernetes natively supports two deployment strategies via the Deployment resource. 
-1. Recreate - It is a clean deployment, terminate all the pods and recreate it.
+1. Recreate - It is a clean deployment, terminate all the pods and recreate it
 2. Rolling Update 
 
-We can implement manually Blue-Green, Canary, A/B, Shadow deployments. 
+We can implement manually Blue-Green, Canary, A/B, Shadow deployments.
+
 ##### 2. How to implement Blue-Green deployments in Kubernates?
 **Answer:** 
 * Two separate Deployments. For example, blueapp and greenapp.
@@ -22,6 +24,13 @@ We can implement manually Blue-Green, Canary, A/B, Shadow deployments.
 ~~~~
 For 3 replicas, at least 2 pods will remain available during the update.
 ### Network Policies
+
+Network Policies are a mechanism for controlling network traffic flow in Kubernetes clusters
+There are three different ways to identify target endpoints:
+* podSelector: Specific Pods (Pods matching a label are allowed)
+* namespaceSelector: Specific Namespaces (all Pods in the namespace are allowed)
+* ipBlock: IP address blocks (endpoints with an IP address in the block are allowed)
+
 ##### 1. Can we enforce Network Policies from Pod to Service?
 **Answer:** Network Policies apply specifically to **pod-to-pod communication** within a Kubernetes cluster. You can manage **incoming traffic** to pods using **Ingress rules** and **outgoing traffic** from pods using **Egress rules**.
 
