@@ -3,7 +3,8 @@
 ##### 1. What are Kubernates native deployments?
 **Answer:**  Kubernetes natively supports two deployment strategies via the Deployment resource. 
 1. Recreate - It is a clean deployment, terminate all the pods and recreate it.
-2. Rolling Update <br>
+2. Rolling Update 
+
 We can implement manually Blue-Green, Canary, A/B, Shadow deployments. 
 ##### 2. How to implement Blue-Green deployments in Kubernates?
 **Answer:** 
@@ -12,13 +13,14 @@ We can implement manually Blue-Green, Canary, A/B, Shadow deployments.
 * Switch traffic after verifying the new version.
 ##### 3. What is the difference between Rolling Update and Canary Deployment?
 **Answer:** Rolling update gradually replaces all old pods with new ones in batches, while canary deployment slowly shifts a small portion of traffic to the new version to test before full rollout.
-##### 4. How Rolling Update works? 
-**Answer:** When there are 3 replicas, at any time 2 pods will be available as per the below configuration. 
+##### 4. How does Rolling Update works? 
+**Answer:** With a Deployment, the rolling update strategy ensures some pods are updated while others stay running, maintaining availability:
  ~~~~ 
  rollingUpdate:
     maxSurge: 1 # Extra pods can be created during rolling update
     maxUnavailable: 1 # At max, one pod will be unavailable during rolling udpate.
 ~~~~
+For 3 replicas, at least 2 pods will remain available during the update.
 ### Network Policies
 ##### 1. Can we enforce Network Policies from Pod to Service?
 **Answer:** Network Policies apply specifically to **pod-to-pod communication** within a Kubernetes cluster. You can manage **incoming traffic** to pods using **Ingress rules** and **outgoing traffic** from pods using **Egress rules**.
@@ -68,13 +70,8 @@ root cause.
 **Answer** Use anti-affinity rules.
 
 ##### 6. What Are Affinity Rules in Kubernetes?
-**Answer** Affinity rules in Kubernetes are scheduling rules that control how Pods are placed on nodes based on certain
-conditions.
+**Answer** Affinity rules control pod placement for performance, fault tolerance, or cost:
 
-They help ensure:
-* Pods run together or separately
-* Pods are placed on specific types of nodes
-* You optimize for performance, fault tolerance, or cost
 
 | Type                  | Description                                                                     |
 | --------------------- | ------------------------------------------------------------------------------- |
