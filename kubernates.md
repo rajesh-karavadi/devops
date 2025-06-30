@@ -1,5 +1,71 @@
 # Kubernetes Concepts
+
+Details of Node, Pods and namespace in a cluster.
+
+Cluster
+├── Node A
+│   ├── Pod 1 (namespace: dev)
+│   └── Pod 2 (namespace: monitoring)
+├── Node B
+│   ├── Pod 3 (namespace: prod)
+│   └── Pod 4 (namespace: monitoring)
+
+DaemonSet will create only one pod into monitoring namespace.
+DaemonSet:
+
+| Feature                        | Description                                                                     |
+| ------------------------------ | ------------------------------------------------------------------------------- |
+| **One pod per node**           | By default, it runs **exactly one** Pod per node                                |
+| **Auto-schedule on new nodes** | When a new node joins, the DaemonSet **adds a Pod automatically**               |
+| **Selective nodes**            | You can target **specific nodes** using labels and `nodeSelector` or `affinity` |
+| **Not for regular apps**       | Use **Deployment** for app workloads, not DaemonSets                            |
+
+~~~
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-monitor
+spec:
+  selector:
+    matchLabels:
+      name: node-monitor
+  template:
+    metadata:
+      labels:
+        name: node-monitor
+    spec:
+      containers:
+        - name: node-monitor
+          image: your-monitoring-agent:latest
+~~~
+
+### ReplicaSet 
+
+The ReplicaSet maintains the desired number of Pods.
+
+The Deployment manages the ReplicaSet, including:
+* Creating, Updating and Rolling it back.
+
+Kubernetes creates a new ReplicaSet with the updated spec during deployment.
+But, ReplicaSet will not maintain versions.
+
 ### Deployments
+
+When you create a Deployment, Kubernetes automatically creates a ReplicaSet behind the scenes to manage the Pods.
+
+So the architecture looks like:
+
+* Deployment manages ReplicaSets
+  | Feature        | **DaemonSet**             | **Deployment**                 |
+  | -------------- | ------------------------- | ------------------------------ |
+  | Purpose        | Run on all/specific nodes | Run a fixed number of replicas |
+  | Pod scheduling | One per node              | Anywhere in the cluster        |
+  | Use case       | System-level agents       | Application-level services     |
+
+Deployment
+└── ReplicaSet
+      └── Pods
+
 ##### 1. What are Kubernetes native deployments?
 
 **Answer:**  Kubernetes natively supports two deployment strategies via the Deployment resource. 
@@ -8,13 +74,15 @@
 
 We can implement manually Blue-Green, Canary, A/B, Shadow deployments.
 
-##### 2. How to implement Blue-Green deployments in Kubernates?
+##### 2. How to implement Blue-Green deployments in Kubernetes?
 **Answer:** 
 * Two separate Deployments. For example, blueapp and greenapp.
 * Service routes traffic to one at a time.
 * Switch traffic after verifying the new version.
+
 ##### 3. What is the difference between Rolling Update and Canary Deployment?
 **Answer:** Rolling update gradually replaces all old pods with new ones in batches, while canary deployment slowly shifts a small portion of traffic to the new version to test before full rollout.
+
 ##### 4. How does Rolling Update works? 
 **Answer:** With a Deployment, the rolling update strategy ensures some pods are updated while others stay running, maintaining availability:
  ~~~~ 
@@ -23,6 +91,7 @@ We can implement manually Blue-Green, Canary, A/B, Shadow deployments.
     maxUnavailable: 1 # At max, one pod will be unavailable during rolling udpate.
 ~~~~
 For 3 replicas, at least 2 pods will remain available during the update.
+
 ### Network Policies
 
 Network Policies are a mechanism for controlling network traffic flow in Kubernetes clusters
