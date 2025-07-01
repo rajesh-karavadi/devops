@@ -2,6 +2,7 @@
 
 Details of Node, Pods and namespace in a cluster.
 
+~~~
 Cluster
 ├── Node A
 │   ├── Pod 1 (namespace: dev)
@@ -9,6 +10,7 @@ Cluster
 ├── Node B
 │   ├── Pod 3 (namespace: prod)
 │   └── Pod 4 (namespace: monitoring)
+~~~
 
 DaemonSet will create only one pod into monitoring namespace.
 DaemonSet:
