@@ -1,26 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: web-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: nginx
+      app: web-app
   template:
     metadata:
       labels:
-        app: nginx
+        app: web-app
     spec:
       containers:
-        - name: nginx
-          image: 
+        - name: web
+          image: rajeshkrvd/web-app:latest  # Update during CI
           ports:
             - containerPort: 80
-      resources:
-        limits:
-          memory: "128Mi"
-          cpu: "250m"
-        requests:
-          memory: "64Mi"
-          cpu: "100m"
