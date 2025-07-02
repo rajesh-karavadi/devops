@@ -23,7 +23,7 @@ jobs:
       - name: Build and push image
         run: |
           IMAGE_TAG=ghcr.io/${{ github.repository_owner }}/devops:${{ github.sha }}
-          docker build -t $IMAGE_TAG ./app
+          docker build -t $IMAGE_TAG ./argocd/app
           docker push $IMAGE_TAG
 
       - name: Update deployment image
