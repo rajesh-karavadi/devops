@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: DOCKER_HUB_USERNAME/my-app:latest
+          image: 
           ports:
             - containerPort: 80
       resources:
