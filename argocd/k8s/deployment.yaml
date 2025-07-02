@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: web
-          image: docker.io/rajeshkrvd/web-app:fd100766fb3939e7abe3ff3c160181f0c62c802a
+          image: 
           ports:
             - containerPort: 80
