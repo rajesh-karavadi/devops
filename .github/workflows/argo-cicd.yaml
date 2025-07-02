@@ -32,7 +32,6 @@ jobs:
       - name: Commit and push updated YAML
         run: |
           git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add ./argocd/k8s/deployment.yaml
-          git commit -m "Update image to $IMAGE_TAG"
+          git config user.email "actions@github.com"
+          git remote set-url origin https://rajesh-karavadi:${{ secrets.MY_GITHUB_PAT }}@github.com/rajesh-karavadi/devops.git
           git push
