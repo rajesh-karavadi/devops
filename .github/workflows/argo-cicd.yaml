@@ -27,7 +27,7 @@ jobs:
 
       - name: Update deployment image
         run: |
-          sed -i "s|image:.*|image: $IMAGE_TAG|" ./devops/argocd/k8s/deployment.yaml
+          sed -i "s|image:.*|image: $IMAGE_TAG|" ./argocd/k8s/deployment.yaml
 
       - name: Commit and push updated YAML
         run: |
