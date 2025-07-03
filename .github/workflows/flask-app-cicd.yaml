@@ -33,6 +33,8 @@ jobs:
           sed -i "s|image: .*$|image: $IMAGE_NAME:$IMAGE_TAG|" flask-app/deployment.yaml
 
       - name: Commit and push changes
+        env:
+          MY_GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
         run: |
           cd flask-app
           git config user.name "github-actions"
