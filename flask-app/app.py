@@ -3,7 +3,7 @@ app = Flask(__name__)
 
 @app.route("/flask-api/hello")
 def hello():
-    return "Hello from Flask + Argo CD!>>>>>>>>>>>>>>><<<<<<<<"
+    return "Hello from Flask + Argo CD! >>>>>>>1235<<<<<<<<"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
