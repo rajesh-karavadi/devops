@@ -1,3 +1,5 @@
 java-docker-app/app/target/*.jar
 
 .venv
+
+.idea
