@@ -1,4 +1,4 @@
-name: Argo CD
+name: argocd-basic-cicd
 
 on:
   push:

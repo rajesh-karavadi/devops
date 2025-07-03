@@ -1,4 +1,4 @@
-name: Build Java App Docker Image
+name: java-app-cicd
 
 on:
   push:

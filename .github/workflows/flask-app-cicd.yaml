@@ -1,0 +1,51 @@
+name: flask-app-cicd
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/flask-app
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/flask-app:${{ github.sha }}
+          docker build -t $IMAGE_TAG ./flask-app
+          echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
+
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME:$IMAGE_TAG
+
+      - name: Checkout manifests repo
+        uses: actions/checkout@v3
+        with:
+          repository: rajesh-karavadi/devops.git
+          token: ${{ secrets.MY_GITHUB_PAT }}
+          path: flask-app
+
+      - name: Update manifest with new image tag
+        run: |
+          sed -i "s|image: .*$|image: $IMAGE_NAME:$IMAGE_TAG|" manifests/flask-app/deployment.yaml
+
+      - name: Commit and push changes
+        run: |
+          cd flask-app
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git commit -am "Update image to $IMAGE_TAG"
+          git push
