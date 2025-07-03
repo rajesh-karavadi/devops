@@ -1,79 +1,34 @@
 # Kubernetes Concepts
 
-Details of Node, Pods and namespace in a cluster.
+## Key Components
 
-~~~
-Cluster
-├── Node A
-│   ├── Pod 1 (namespace: dev)
-│   └── Pod 2 (namespace: monitoring)
-├── Node B
-│   ├── Pod 3 (namespace: prod)
-│   └── Pod 4 (namespace: monitoring)
-~~~
-
-DaemonSet will create only one pod into monitoring namespace.
-DaemonSet:
-
-| Feature                        | Description                                                                     |
-| ------------------------------ | ------------------------------------------------------------------------------- |
-| **One pod per node**           | By default, it runs **exactly one** Pod per node                                |
-| **Auto-schedule on new nodes** | When a new node joins, the DaemonSet **adds a Pod automatically**               |
-| **Selective nodes**            | You can target **specific nodes** using labels and `nodeSelector` or `affinity` |
-| **Not for regular apps**       | Use **Deployment** for app workloads, not DaemonSets                            |
-
-~~~
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  name: node-monitor
-spec:
-  selector:
-    matchLabels:
-      name: node-monitor
-  template:
-    metadata:
-      labels:
-        name: node-monitor
-    spec:
-      containers:
-        - name: node-monitor
-          image: your-monitoring-agent:latest
-~~~
-
-### ReplicaSet 
-
-The ReplicaSet maintains the desired number of Pods.
-
-The Deployment manages the ReplicaSet, including:
-* Creating, Updating and Rolling it back.
-
-Kubernetes creates a new ReplicaSet with the updated spec during deployment.
-But, ReplicaSet will not maintain versions.
-
-### Deployments
-
-When you create a Deployment, Kubernetes automatically creates a ReplicaSet behind the scenes to manage the Pods.
-
-So the architecture looks like:
-
-* Deployment manages ReplicaSets
-  | Feature        | **DaemonSet**             | **Deployment**                 |
-  | -------------- | ------------------------- | ------------------------------ |
-  | Purpose        | Run on all/specific nodes | Run a fixed number of replicas |
-  | Pod scheduling | One per node              | Anywhere in the cluster        |
-  | Use case       | System-level agents       | Application-level services     |
-
-Deployment
-└── ReplicaSet
-      └── Pods
+* **Namespace** is a logical partition allowing teams or projects to organize and manage resources like pods, services,
+ config maps, and resource quotas independently within the same physical infrastructure.
+* **Pod** is the smallest and simplest deployable unit, representing a single instance of a running process 
+within a cluster. 
+* **Cluster** is a group of nodes that run containerized applications in a highly available, scalable, and automated 
+environment managed by a control plane.
+* **Master node** manages the cluster – schedules workloads, maintains desired state, and handles API requests.
+* **Worker node** run the actual application workloads (Pods).
+* **API Server** is the entry point to the cluster, handles all communication.
+* **Scheduler** Decides which node a pod should run on.
+* **Controller Manager** Ensures the cluster state matches the desired configuration.
+* **etcd** A key-value store that stores cluster configuration and state.
+* **DaemonSet** ensures that a specific Pod runs on every (or selected) node in the cluster
+* **ReplicaSet** ensures that a specified number of identical pods are running at all times to maintain availability 
+and fault tolerance
 
 ##### 1. What are Kubernetes native deployments?
-
 **Answer:**  Kubernetes natively supports two deployment strategies via the Deployment resource. 
-1. Recreate - It is a clean deployment, terminate all the pods and recreate it
+1. Recreate - It is a clean deployment, terminate all the pods and recreate it. Simple but causes downtime.
 2. Rolling Update 
-
+~~~
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 1
+~~~
 We can implement manually Blue-Green, Canary, A/B, Shadow deployments.
 
 ##### 2. How to implement Blue-Green deployments in Kubernetes?
