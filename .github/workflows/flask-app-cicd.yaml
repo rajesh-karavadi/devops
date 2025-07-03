@@ -26,6 +26,7 @@ jobs:
         run: |
           IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/flask-app:${{ github.sha }}
           docker build -t $IMAGE_TAG ./flask-app
+          echo $IMAGE_TAG
           echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
 
       - name: Push Docker image
