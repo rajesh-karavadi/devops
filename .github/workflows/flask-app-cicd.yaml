@@ -28,7 +28,7 @@ jobs:
       - name: Build Docker image And Push
         run: |
           
-          IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/flask-app:latest
+          IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/flask-app:v2
           docker build -t $IMAGE_TAG ./flask-app
           docker push $IMAGE_TAG
 
