@@ -28,16 +28,9 @@ jobs:
           docker build -t $IMAGE_TAG ./flask-app
           docker push $IMAGE_TAG
 
-      - name: Checkout manifests repo
-        uses: actions/checkout@v3
-        with:
-          repository: rajesh-karavadi/devops.git
-          token: ${{ secrets.MY_GITHUB_PAT }}
-          path: flask-app
-
       - name: Update manifest with new image tag
         run: |
-          sed -i "s|image: .*$|image: $IMAGE_NAME:$IMAGE_TAG|" manifests/flask-app/deployment.yaml
+          sed -i "s|image: .*$|image: $IMAGE_NAME:$IMAGE_TAG|" flask-app/deployment.yaml
 
       - name: Commit and push changes
         run: |
