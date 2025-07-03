@@ -22,15 +22,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Docker image
+      - name: Build Docker image And Push
         run: |
           IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/flask-app:${{ github.sha }}
           docker build -t $IMAGE_TAG ./flask-app
-          echo $IMAGE_TAG
-          echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
-
-      - name: Push Docker image
-        run: docker push $IMAGE_TAG
+          docker push $IMAGE_TAG
 
       - name: Checkout manifests repo
         uses: actions/checkout@v3
