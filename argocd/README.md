@@ -37,6 +37,8 @@ Repository 'https://github.com/rajesh-karavadi/devops.git' added
 $ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
 <<<Pwd>>>
 
+To remove finalizers
+kubectl patch application web-app -n argocd -p '{"metadata":{"finalizers":[]}}' --type=merge
 ~~~~
 * --upsert tells Argo CD:
 “If this repo already exists, just update its credentials.”
