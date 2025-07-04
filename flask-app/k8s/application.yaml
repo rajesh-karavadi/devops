@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/rajesh-karavadi/devops
     targetRevision: main
-    path: flask-app
+    path: flask-app/k8s
   destination:
     server: https://kubernetes.default.svc
     namespace: default
