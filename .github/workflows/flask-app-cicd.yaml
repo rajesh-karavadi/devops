@@ -10,7 +10,7 @@ permissions:
 
 env:
   IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/flask-app
-
+  IMAGE_TAG: v3
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -27,14 +27,13 @@ jobs:
 
       - name: Build Docker image And Push
         run: |
-          
-          IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/flask-app:v3
-          docker build -t $IMAGE_TAG ./flask-app
-          docker push $IMAGE_TAG
+
+          docker build -t $IMAGE_NAME:$IMAGE_TAG ./flask-app
+          docker push $IMAGE_NAME:$IMAGE_TAG
 
       - name: Update manifest with new image tag
         run: |
-          sed -i "s|image: .*$|image: $IMAGE_NAME:$IMAGE_TAG|" flask-app/k8s/deployment.yaml
+          sed -i "s|image: .*|image: $IMAGE_NAME:$IMAGE_TAG|" flask-app/k8s/deployment.yaml
 
       - name: Commit and push changes
         env:
@@ -43,5 +42,6 @@ jobs:
           cd flask-app
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git commit -am "Update image to $IMAGE_TAG"
-          git push origin HEAD:main
+          git add flask-app/k8s/deployment.yaml
+          git commit -m "Update deployment.yaml to $IMAGE_NAME:$IMAGE_TAG"
+          git push https://x-access-token:${MY_GITHUB_PAT}@github.com/${{ github.repository }} HEAD:main
