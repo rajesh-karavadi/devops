@@ -35,6 +35,8 @@ jobs:
         run: |
           sed -i "s|image: .*|image: $IMAGE_NAME:$IMAGE_TAG|" flask-app/k8s/deployment.yaml
           echo "Updated deployment.yaml to use $IMAGE_NAME:$IMAGE_TAG"
+      - name: Print deployment.yaml after sed
+        run: cat flask-app/k8s/deployment.yaml
       - name: Commit and push changes
         env:
           MY_GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
