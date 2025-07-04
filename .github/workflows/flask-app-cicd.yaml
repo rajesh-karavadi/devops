@@ -44,5 +44,11 @@ jobs:
           cd flask-app
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git commit -m "Update deployment.yaml to $IMAGE_NAME:$IMAGE_TAG"
-          git push origin HEAD:main
+          
+          git add flask-app/k8s/deployment.yaml
+          if git diff --cached --quiet; then
+            echo "✅ No changes to commit"
+          else
+            git commit -m "Update image to $IMAGE_NAME:$IMAGE_TAG"
+            git push origin HEAD:main
+          fi
