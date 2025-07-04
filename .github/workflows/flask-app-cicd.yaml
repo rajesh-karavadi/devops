@@ -10,7 +10,7 @@ permissions:
 
 env:
   IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/flask-app
-  IMAGE_TAG: v4
+  IMAGE_TAG: v5
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
