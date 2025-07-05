@@ -4,6 +4,13 @@ on:
   push:
     branches: [ "main" ]
 
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "DESTROY" to confirm'
+        required: true
+        default: 'NO'
+
 defaults:
   run:
     working-directory: gcp-static-website
@@ -29,9 +36,9 @@ jobs:
 
       - name: 📦 Terraform Init
         run: terraform init
-
-      - name: 📊 Terraform Plan
-        run: terraform plan -var-file="terraform.tfvars"
+#
+#      - name: 📊 Terraform Plan
+#        run: terraform plan -var-file="terraform.tfvars"
 
       - name: 🚀 Terraform Destroy
         run: terraform destroy -auto-approve -var-file="terraform.tfvars"
