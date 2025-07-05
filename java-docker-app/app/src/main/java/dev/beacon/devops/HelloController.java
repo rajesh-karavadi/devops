@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 	@GetMapping("/hello")
 	public String sayHello() {
-		return "Hello from production-ready app!";
+		return ">> Hello from production-ready app!";
 	}
 
 	@GetMapping("/health")
 	public String healthCheck() {
-		return "OK";
+		return ">> OK";
 	}
 }
 
