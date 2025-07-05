@@ -40,5 +40,9 @@ jobs:
 #      - name: 📊 Terraform Plan
 #        run: terraform plan -var-file="terraform.tfvars"
 
+      - name: 🛠 Import bucket if missing
+        run: |
+          terraform import -input=false google_storage_bucket.static_site raka1-static-site-bucket || true
+
       - name: 🚀 Terraform Destroy
         run: terraform destroy -auto-approve -var-file="terraform.tfvars"
