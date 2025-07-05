@@ -37,3 +37,7 @@ kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.pas
 <<pwd will be printed here>>
 ~~~~
 * Use the password from here to login ArgoCD for Username `admin`
+
+~~~~
+$ argocd app sync flask-app
+~~~~

@@ -1,4 +1,0 @@
-resources:
-  - deployment.yaml
-  - argo-app.yaml
-  - nginx-svc.yaml
