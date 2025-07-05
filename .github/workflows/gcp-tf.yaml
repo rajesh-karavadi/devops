@@ -3,6 +3,8 @@ name: Deploy Static Website to GCP
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'gcp-static-website/**'
 
 defaults:
   run:
