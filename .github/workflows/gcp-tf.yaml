@@ -33,5 +33,5 @@ jobs:
       - name: 📊 Terraform Plan
         run: terraform plan -var-file="terraform.tfvars"
 
-      - name: 🚀 Terraform Apply
-        run: terraform apply -auto-approve -var-file="terraform.tfvars"
+      - name: 🚀 Terraform Destroy
+        run: terraform destroy -auto-approve -var-file="terraform.tfvars"
