@@ -10,7 +10,7 @@ defaults:
 
 jobs:
   terraform:
-    name: Terraform Apply
+    name: Terraform Destroy
     runs-on: ubuntu-latest
 
     steps:
