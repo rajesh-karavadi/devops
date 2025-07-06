@@ -3,12 +3,13 @@ name: gcp-docker-java-app-cicd
 on:
   push:
     branches: [ main ]
-
     paths:
-      - 'gcp-docker-java-app/**'
+      - 'gcp-docker-java-app/app/**'
+env:
+  APP_NAME: gcp-docker-java-app
 
 jobs:
-  compile-and-build-jar:
+  compile-and-package-jar:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,8 +22,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build JAR with Maven (in subfolder)
-        working-directory: ./gcp-docker-java-app/app
+      - name: Package JAR with Maven (in subfolder)
+        working-directory: ./${APP_NAME}/app
         run: mvn clean package
 
   docker-build-and-push:
@@ -45,22 +46,22 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/gcp-docker-java-app:${{ github.sha }} ./gcp-docker-java-app
+          docker build -t us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/${APP_NAME}:${{ github.sha }} ./${APP_NAME}
 
       - name: Push Docker image
         run: |
-          docker push us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/gcp-docker-java-app:${{ github.sha }}
+          docker push us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/${APP_NAME}:${{ github.sha }}
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
         with:
           service: gcp-docker-java-app
-          image: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/gcp-docker-java-app:${{ github.sha }}
+          image: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/${APP_NAME}:${{ github.sha }}
           region: us-east1
 
       - name: Make Cloud Run service public
         run: |
-          gcloud run services add-iam-policy-binding gcp-docker-java-app \
+          gcloud run services add-iam-policy-binding ${APP_NAME} \
             --member="allUsers" \
             --role="roles/run.invoker" \
             --region=us-east1
