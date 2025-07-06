@@ -1,17 +1,17 @@
-name: flask-app-cicd
+name: gcp-k8s-flask-app-cicd
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'flask-app/**'
+      - 'gcp-k8s-flask-app/**'
 
 permissions:
   contents: write
 
 env:
-  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/flask-app
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/gcp-k8s-flask-app
   IMAGE_TAG: v7
 jobs:
   build-and-deploy:
@@ -30,20 +30,20 @@ jobs:
       - name: Build Docker image And Push
         run: |
 
-          docker build -t $IMAGE_NAME:$IMAGE_TAG ./flask-app
+          docker build -t $IMAGE_NAME:$IMAGE_TAG ./gcp-k8s-flask-app
           docker push $IMAGE_NAME:$IMAGE_TAG
 
       - name: Update image tag in Kubernetes manifest
         run: |
-          sed -i "s|image: .*|image: $IMAGE_NAME:$IMAGE_TAG|" flask-app/k8s/deployment.yaml
+          sed -i "s|image: .*|image: $IMAGE_NAME:$IMAGE_TAG|" gcp-k8s-flask-app/k8s/deployment.yaml
           echo "Updated deployment.yaml to use $IMAGE_NAME:$IMAGE_TAG"
       - name: Print deployment.yaml after sed
-        run: cat flask-app/k8s/deployment.yaml
+        run: cat gcp-k8s-flask-app/k8s/deployment.yaml
       - name: Commit and push changes
         env:
           MY_GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
         run: |
-          cd flask-app
+          cd gcp-k8s-flask-app
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           
