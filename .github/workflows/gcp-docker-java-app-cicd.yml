@@ -58,3 +58,11 @@ jobs:
           image: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/gcp-docker-java-app:${{ github.sha }}
           region: us-east1
 
+      - name: Make Cloud Run service public
+        run: |
+          gcloud run services add-iam-policy-binding gcp-docker-java-app \
+            --member="allUsers" \
+            --role="roles/run.invoker" \
+            --region=us-east1
+
+
