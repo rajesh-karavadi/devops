@@ -22,7 +22,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build JAR with Maven (in subfolder)
-        working-directory: ./java-docker-app/app
+        working-directory: ./gcp-docker-java-app/app
         run: mvn clean package
 
   build-and-push:
