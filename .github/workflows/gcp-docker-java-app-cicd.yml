@@ -8,7 +8,7 @@ on:
       - 'gcp-docker-java-app/**'
 
 jobs:
-  build:
+  compile-and-build-jar:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +25,7 @@ jobs:
         working-directory: ./gcp-docker-java-app/app
         run: mvn clean package
 
-  build-and-push:
+  docker-build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -45,16 +45,16 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/java-docker-app:${{ github.sha }} ./gcp-docker-java-app
+          docker build -t us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/gcp-docker-java-app:${{ github.sha }} ./gcp-docker-java-app
 
       - name: Push Docker image
         run: |
-          docker push us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/java-docker-app:${{ github.sha }}
+          docker push us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/gcp-docker-java-app:${{ github.sha }}
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
         with:
-          service: java-docker-app
+          service: gcp-docker-java-app
           image: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/gcp-docker-java-app:${{ github.sha }}
           region: us-east1
 
