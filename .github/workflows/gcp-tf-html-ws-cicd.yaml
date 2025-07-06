@@ -3,6 +3,8 @@ name: gcp-tf-html-ws-cicd
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'gcp-tf-html-ws-cicd/**'
 
   workflow_dispatch:
     inputs:

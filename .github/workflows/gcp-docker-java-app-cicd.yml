@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
     paths:
-      - 'java-docker-app/**'
+      - 'gcp-docker-java-app-cicd/**'
 
 jobs:
   build:

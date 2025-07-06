@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'gcp-k8s-flask-app/**'
+      - 'gcp-k8s-flask-app-cicd/**'
 
 permissions:
   contents: write
