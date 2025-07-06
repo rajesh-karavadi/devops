@@ -1,4 +1,4 @@
-name: java-app-cicd
+name: gcp-docker-java-app-cicd
 
 on:
   push:

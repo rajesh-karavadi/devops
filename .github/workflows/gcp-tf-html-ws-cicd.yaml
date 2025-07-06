@@ -1,4 +1,4 @@
-name: Deploy Static Website to GCP
+name: gcp-tf-html-ws-cicd
 
 on:
   push:
