@@ -50,7 +50,9 @@ jobs:
       - name: 🛠 Import bucket (if exists)
         if: github.event_name == 'workflow_dispatch'
         run: |
-          terraform import  google_storage_bucket.static_site ${{ vars.BUCKET_NAME }} || true
+          BUCKET_NAME=$(grep bucket_name terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
+          echo "Importing bucket: $BUCKET_NAME"
+          terraform import  google_storage_bucket.static_site $BUCKET_NAME || true
 
       # ✅ Only apply if user chose "apply"
       - name: ✅ Apply Resources
