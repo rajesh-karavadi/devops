@@ -18,6 +18,7 @@ resource "google_storage_bucket_object" "index" {
   bucket = google_storage_bucket.static_site.name
   source = "${path.module}/website/index.html"
   content_type = "text/html"
+
 }
 
 resource "google_storage_bucket_iam_binding" "public_access" {
