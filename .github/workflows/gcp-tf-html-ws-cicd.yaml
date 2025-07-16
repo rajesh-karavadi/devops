@@ -9,9 +9,13 @@ on:
   workflow_dispatch:
     inputs:
       confirm:
-        description: 'Type "DESTROY" to confirm'
+        description: 'Terraform Action'
         required: true
-        default: 'NO'
+        default: 'destroy'
+        type: choice
+        options:
+          - apply
+          - destroy
 
 defaults:
   run:
@@ -39,16 +43,12 @@ jobs:
       - name: 📦 Terraform Init
         run: terraform init
 #
-#      - name: 📊 Terraform Plan
-#        run: terraform plan -var-file="terraform.tfvars"
-
+      - name: 📊 Terraform Plan
+        run: terraform plan -var-file="terraform.tfvars"
 
       - name: 🛠 Import bucket if missing
         run: |
           terraform import -input=false google_storage_bucket.static_site raka1-static-site-bucket || true
 
-      - name: ✅ Apply (update force_destroy in state)
-        run: terraform apply -auto-approve -var-file="terraform.tfvars"
-
-      - name: 🚀 Terraform Destroy
-        run: terraform destroy -auto-approve -var-file="terraform.tfvars"
+      - name: Run Terraform ${{ github.event.inputs.action }}
+        run: terraform ${{ github.event.inputs.action }} -auto-approve -var-file="terraform.tfvars"
