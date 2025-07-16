@@ -23,7 +23,7 @@ defaults:
 
 jobs:
   terraform:
-    name: Terraform Destroy
+    name: Terraform Build
     runs-on: ubuntu-latest
 
     steps:
@@ -50,5 +50,5 @@ jobs:
         run: |
           terraform import -input=false google_storage_bucket.static_site raka1-static-site-bucket || true
 
-      - name: Run Terraform ${{ github.event.inputs.confirm }}
+      - name: Run Terraform ${{ github.event.inputs.action }}
         run: terraform ${{ github.event.inputs.action }} -auto-approve -var-file="terraform.tfvars"
