@@ -11,7 +11,7 @@ on:
       confirm:
         description: 'Terraform Action'
         required: true
-        default: 'destroy'
+        default: 'apply'
         type: choice
         options:
           - apply
@@ -42,7 +42,7 @@ jobs:
 
       - name: 📦 Terraform Init
         run: terraform init
-#
+
       - name: 📊 Terraform Plan
         run: terraform plan -var-file="terraform.tfvars"
 
@@ -50,5 +50,10 @@ jobs:
         run: |
           terraform import -input=false google_storage_bucket.static_site raka1-static-site-bucket || true
 
-      - name: Run Terraform ${{ github.event.inputs.confirm }}
+      - name: Run Terraform (workflow_dispatch)
+        if: github.event_name == 'workflow_dispatch'
         run: terraform ${{ github.event.inputs.confirm }} -auto-approve -var-file="terraform.tfvars"
+
+      - name: Auto Apply on Push
+        if: github.event_name == 'push'
+        run: terraform apply -auto-approve -var-file="terraform.tfvars"
