@@ -50,5 +50,5 @@ jobs:
         run: |
           terraform import -input=false google_storage_bucket.static_site raka1-static-site-bucket || true
 
-      - name: Run Terraform ${{ github.event.inputs.action }}
+      - name: Run Terraform ${{ github.event.inputs.confirm }}
         run: terraform ${{ github.event.inputs.action }} -auto-approve -var-file="terraform.tfvars"
