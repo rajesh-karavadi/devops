@@ -1,4 +1,4 @@
-name: gcp-static-website-infra-cicd
+name: Run Infra for GCP Static Website
 
 on:
   push:
