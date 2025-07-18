@@ -1,0 +1,34 @@
+name: Upload Static Site to GCS
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'gcp-static-website/src/**'
+
+  workflow_dispatch:
+
+jobs:
+  upload:
+    name: Upload HTML to GCS Bucket
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🔐 Authenticate to GCP
+        run: |
+          echo "${{ secrets.GCP_CREDENTIALS }}" > key.json
+          gcloud auth activate-service-account --key-file=key.json
+          PROJECT_ID=$(grep project_id terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
+          echo " Project: $PROJECT_ID"
+          gcloud config set project $PROJECT_ID
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: key.json
+
+      - name: 📤 Upload index.html to GCS
+        run: |
+          BUCKET_NAME=$(grep project_id terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
+          echo " Bucket: $BUCKET_NAME"
+          gsutil cp gcp-static-website/src/index.html gs://$BUCKET_NAME/index.html
