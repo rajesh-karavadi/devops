@@ -1,10 +1,10 @@
-name: gcp-tf-html-ws-cicd
+name: gcp-static-website-cicd
 
 on:
   push:
     branches: [ "main" ]
     paths:
-      - 'gcp-tf-html-ws/**'
+      - 'gcp-static-website/infra/**'
 
   workflow_dispatch:
     inputs:

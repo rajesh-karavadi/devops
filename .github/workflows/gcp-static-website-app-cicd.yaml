@@ -1,0 +1,66 @@
+name: gcp-static-website-app-cicd
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'gcp-static-website/src/**'
+
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Terraform Action'
+        required: true
+        default: 'apply'
+        type: choice
+        options:
+          - apply
+          - destroy
+
+jobs:
+  terraform:
+    name: Terraform CI/CD
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🔐 Set up Google Cloud credentials
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: 🧰 Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: 📦 Terraform Init
+        run: terraform init
+
+      - name: 📊 Terraform Plan
+        run: terraform plan -var-file="terraform.tfvars"
+
+      # ✅ Always import bucket before apply/destroy (makes sure it's in state)
+      - name: 🛠 Import bucket (if exists)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          BUCKET_NAME=$(grep bucket_name terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
+          echo "Importing bucket: $BUCKET_NAME"
+          terraform import  google_storage_bucket.static_site $BUCKET_NAME || true
+
+      # ✅ Only apply if user chose "apply"
+      - name: ✅ Apply Resources
+        if: github.event_name == 'workflow_dispatch'
+        run: terraform apply -auto-approve -var-file="terraform.tfvars"
+
+      # ✅ Only destroy if user chose "destroy"
+      - name: 🔥 Destroy Resources
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.confirm == 'destroy'
+        run: terraform destroy -auto-approve -var-file="terraform.tfvars"
+
+      # ✅ Apply automatically on code push
+      - name: Auto Apply on Push
+        if: github.event_name == 'push'
+        run: terraform apply -auto-approve -var-file="terraform.tfvars"
