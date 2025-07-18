@@ -22,7 +22,7 @@ defaults:
 
 jobs:
   terraform:
-    name: Terraform CI/CD
+    name: GCP Static Website App CI/CD
     runs-on: ubuntu-latest
 
     steps:
