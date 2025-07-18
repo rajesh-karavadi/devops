@@ -47,7 +47,7 @@ jobs:
 
       # ✅ Always import bucket before apply/destroy (makes sure it's in state)
       - name: 🛠 Import bucket (if exists)
-        if: github.event_name == 'workflow_dispatch'
+        if: always()
         run: |
           BUCKET_NAME=$(grep bucket_name terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
           echo "Importing bucket: $BUCKET_NAME"
@@ -55,7 +55,7 @@ jobs:
 
       # ✅ Only apply if user chose "apply"
       - name: ✅ Apply Resources
-        if: github.event_name == 'workflow_dispatch'
+        if: always()
         run: terraform apply -auto-approve -var-file="terraform.tfvars"
 
       # ✅ Only destroy if user chose "destroy"
