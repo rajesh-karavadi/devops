@@ -1,4 +1,4 @@
-name: gcp-static-website-cicd
+name: gcp-static-website-infra-cicd
 
 on:
   push:
