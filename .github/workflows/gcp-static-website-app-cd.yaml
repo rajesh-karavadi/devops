@@ -8,6 +8,10 @@ on:
 
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: gcp-static-website/infra
+    
 jobs:
   upload:
     name: Upload HTML to GCS Bucket
@@ -24,9 +28,8 @@ jobs:
 
       - name: 🧪 Show Project
         run: |
-          PROJECT_ID=$(grep project_id terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
-          echo " Project: $PROJECT_ID"
-          gcloud config set project $PROJECT_ID
+          echo "${{ secrets.GCP_PROJECT_ID }}"
+          gcloud config set project "${{ secrets.GCP_PROJECT_ID }}"
 
       - name: 📤 Upload index.html to GCS
         run: |
