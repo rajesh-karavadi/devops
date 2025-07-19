@@ -28,6 +28,10 @@ jobs:
           BUCKET_NAME=$(grep bucket_name ./gcp-static-website/infra/terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
           echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_ENV
 
+      - name: Activate service account for gsutil
+        run: |
+          gcloud auth activate-service-account --key-file="${GOOGLE_APPLICATION_CREDENTIALS}"
+
       - name: Upload static website to GCS
         run: |
           echo "Uploading to gs://$BUCKET_NAME"
