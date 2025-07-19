@@ -1,38 +1,34 @@
-name: Upload Static Site to GCS
+name: Deploy Static Website
 
 on:
   push:
-    branches: [ "main" ]
-    paths:
-      - 'gcp-static-website/src/**'
+    branches: [main]
 
-  workflow_dispatch:
-
-defaults:
-  run:
-    working-directory: gcp-static-website/infra
-    
 jobs:
-  upload:
-    name: Upload HTML to GCS Bucket
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: 🔐 Authenticate to Google Cloud
+      - name: Setup gcloud
         uses: google-github-actions/auth@v2
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
-      - name: 🧪 Show Project
+      - name: Set gcloud project
         run: |
-          echo "${{ secrets.GCP_PROJECT_ID }}"
-          gcloud config set project "${{ secrets.GCP_PROJECT_ID }}"
+          PROJECT_ID=$(grep project_id ./gcp-static-website/infra/terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
+          gcloud config set project "$PROJECT_ID"
+          echo "PROJECT_ID=$PROJECT_ID" >> $GITHUB_ENV
 
-      - name: 📤 Upload index.html to GCS
+      - name: Set bucket name
         run: |
-          BUCKET_NAME=$(grep ${{ secrets.GCP_PROJECT_ID }} ./../infra/terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
-          echo " Bucket: $BUCKET_NAME"
-          gsutil cp gcp-static-website/src/index.html gs://$BUCKET_NAME/index.html
+          BUCKET_NAME=$(grep bucket_name ./gcp-static-website/infra/terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
+          echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_ENV
+
+      - name: Upload static website to GCS
+        run: |
+          echo "Uploading to gs://$BUCKET_NAME"
+          gsutil -m cp -r ./gcp-static-website/src/* "gs://$BUCKET_NAME/"
