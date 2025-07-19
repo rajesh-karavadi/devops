@@ -33,6 +33,6 @@ jobs:
 
       - name: 📤 Upload index.html to GCS
         run: |
-          BUCKET_NAME=$(grep ${{ secrets.GCP_PROJECT_ID }} ../infra/terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
+          BUCKET_NAME=$(grep ${{ secrets.GCP_PROJECT_ID }} ./../infra/terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
           echo " Bucket: $BUCKET_NAME"
           gsutil cp gcp-static-website/src/index.html gs://$BUCKET_NAME/index.html
