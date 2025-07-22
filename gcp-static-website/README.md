@@ -1,24 +1,22 @@
-## Sample Project for Uploading HTML to Google Cloud Storage
+## Host a Static Website on Google Cloud Storage – End-to-End Example
 
-### This project demonstrates how to deploy a static HTML website to **Google Cloud Storage (GCS)** using **Terraform** and **GitHub Actions**.
+This project demonstrates how to deploy a static HTML website to **Google Cloud Storage (GCS)** using **Terraform** and **GitHub Actions**
 
-1. Provision Infrastructure using Terraform
-2. Upload HTML Files to a GCP Storage Bucket
-
-Project Structure:
-
+#### `Project Structure:`
+~~~~
 gcp-static-website/
 ├── infra/ # Terraform files to provision GCS bucket
 │ └── terraform.tfvars # Variables including project_id and bucket_name
 └── src/ # Static HTML files to upload to GCS
+~~~~
 
 ---
 
-## 🚀 CI/CD Overview
+### 🚀 CI/CD Overview
 
 This repository includes two GitHub Actions workflows:
 
-### 1. ✅ Infrastructure Workflow — `Run Infra for GCP Static Website`
+#### 1. ✅ Infrastructure Workflow — `Run Infra for GCP Static Website`
 
 **Path**: `.github/workflows/infra.yml`
 
@@ -34,7 +32,7 @@ This repository includes two GitHub Actions workflows:
 - Applies or destroys infrastructure based on user input
 - Auto-applies on code push for seamless integration
 
-### 2. 🌍 Deployment Workflow — `Code Deploy Static Website`
+#### 2. 🌍 Deployment Workflow — `Code Deploy Static Website`
 
 **Path**: `.github/workflows/deploy.yml`
 
@@ -50,15 +48,15 @@ This repository includes two GitHub Actions workflows:
 
 ---
 
-## ⚙️ How to Use
+### ⚙️ How to Use
 
-### 1. 🔐 Setup GitHub Secrets
+#### 1. 🔐 Setup GitHub Secrets
 
 Add the following secret to your GitHub repo:
 
 - `GCP_CREDENTIALS`: JSON key for a GCP service account with `Storage Admin` and `Terraform` permissions
 
-### 2. 📦 Deploy Infrastructure
+#### 2. 📦 Deploy Infrastructure
 
 Run the **"Run Infra for GCP Static Website"** workflow:
 
@@ -67,7 +65,7 @@ Run the **"Run Infra for GCP Static Website"** workflow:
 
 > This can also be triggered automatically on push to `infra/`
 
-### 3. 🌐 Upload HTML Files
+#### 3. 🌐 Upload HTML Files
 
 Push your HTML updates to the `src/` folder on the `main` branch to trigger the **"Code Deploy Static Website"** workflow.
 
@@ -75,7 +73,7 @@ Files will be uploaded to the GCS bucket with cache-busting headers.
 
 ---
 
-## 📌 Notes
+### 📌 Notes
 
 - Ensure your `terraform.tfvars` contains valid `project_id` and `bucket_name`
 - Deletion and re-upload may be needed to reflect changes due to caching (use the built-in delete logic if needed)
@@ -83,7 +81,7 @@ Files will be uploaded to the GCS bucket with cache-busting headers.
 
 ---
 
-## 📄 License
+### 📄 License
 
 This project is licensed under the MIT License.
 
