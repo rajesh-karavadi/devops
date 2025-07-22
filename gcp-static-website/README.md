@@ -1,17 +1,14 @@
 ## Sample Project for Uploading HTML to Google Cloud Storage
 
-### This project demonstrates how to deploy a static HTML website to **Google Cloud Storage (GCS)** using **Terraform** and **GitHub Actions**.
+This project demonstrates how to deploy a static HTML website to **Google Cloud Storage (GCS)** using **Terraform** and **GitHub Actions**
 
-1. Provision Infrastructure using Terraform
-2. Upload HTML Files to a GCP Storage Bucket
-
-Project Structure:
-
+**Project Structure:**
+~~~
 gcp-static-website/
 ├── infra/ # Terraform files to provision GCS bucket
 │ └── terraform.tfvars # Variables including project_id and bucket_name
 └── src/ # Static HTML files to upload to GCS
-
+~~~
 ---
 
 ## 🚀 CI/CD Overview
