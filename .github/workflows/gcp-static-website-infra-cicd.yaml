@@ -16,6 +16,7 @@ on:
         options:
           - apply
           - destroy
+
 defaults:
   run:
     working-directory: gcp-static-website/infra
