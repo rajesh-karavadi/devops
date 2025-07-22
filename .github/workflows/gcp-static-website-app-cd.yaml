@@ -1,4 +1,4 @@
-name: Code Deploy Static Website
+name: Code Deploy to GCP Static Website
 
 on:
   push:
