@@ -3,10 +3,12 @@ name: Code Deploy to GCP Static Website
 on:
   push:
     branches: [main]
+    paths:
+      - 'gcp-static-website/src/**'
 
 defaults:
   run:
-    working-directory: gcp-static-website/src
+    working-directory: gcp-static-website
 
 jobs:
   deploy:
@@ -23,13 +25,13 @@ jobs:
 
       - name: Set gcloud project
         run: |
-          PROJECT_ID=$(grep project_id ./gcp-static-website/infra/terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
+          PROJECT_ID=$(grep project_id ./infra/terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
           gcloud config set project "$PROJECT_ID"
           echo "PROJECT_ID=$PROJECT_ID" >> $GITHUB_ENV
 
       - name: Set bucket name
         run: |
-          BUCKET_NAME=$(grep bucket_name ./gcp-static-website/infra/terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
+          BUCKET_NAME=$(grep bucket_name ./infra/terraform.tfvars | cut -d '=' -f2 | tr -d ' "')
           echo "BUCKET_NAME=$BUCKET_NAME" >> $GITHUB_ENV
 
       - name: Activate service account for gsutil
@@ -39,4 +41,4 @@ jobs:
       - name: Upload static website to GCS
         run: |
           echo "Uploading to gs://$BUCKET_NAME"
-          gsutil -m -h "Cache-Control:public,max-age=0" cp -r ./gcp-static-website/src/* "gs://$BUCKET_NAME/"
+          gsutil -m -h "Cache-Control:public,max-age=0" cp -r ./src/* "gs://$BUCKET_NAME/"
