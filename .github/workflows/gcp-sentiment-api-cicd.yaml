@@ -1,0 +1,49 @@
+name: Build and Deploy to Cloud Run using Docker Hub
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'gcp-sentiment-api/app/**'
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 🔐 Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: 🔧 Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: 🐳 Login to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: 🛠️ Build and Push Docker Image to Docker Hub
+        run: |
+          IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/sentiment-api"
+          docker build -t $IMAGE_NAME .
+          docker push $IMAGE_NAME
+
+      - name: 🚀 Deploy to Cloud Run using Docker Hub image
+        run: |
+          REGION="us-east1"
+          SERVICE_NAME="gcp-sentiment-api"
+          IMAGE_NAME="docker.io/${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api"
+
+          gcloud run deploy $SERVICE_NAME \
+            --image $IMAGE_NAME \
+            --platform managed \
+            --region $REGION \
+            --allow-unauthenticated
