@@ -1,4 +1,4 @@
-name: Build and Deploy to Cloud Run using Docker Hub
+name: Sentiment API
 
 on:
   push:
