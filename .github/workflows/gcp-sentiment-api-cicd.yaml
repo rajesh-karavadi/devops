@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'gcp-sentiment-api/app/**'
+      - 'gcp-sentiment-api/**'
 
 permissions:
   contents: write
