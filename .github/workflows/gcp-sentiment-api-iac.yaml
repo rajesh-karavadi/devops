@@ -1,10 +1,10 @@
-name: GCP Sentiment API
+name: GCP Sentiment API IaC
 
 on:
   push:
     branches: [main]
     paths:
-      - 'gcp-sentiment-api/app/**'
+      - 'gcp-sentiment-api/iac/**'
 
 permissions:
   contents: write
