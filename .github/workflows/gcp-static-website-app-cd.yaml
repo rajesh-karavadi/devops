@@ -6,7 +6,7 @@ on:
 
 defaults:
   run:
-    working-directory: gcp-static-website/infra
+    working-directory: gcp-static-website/src
 
 jobs:
   deploy:
