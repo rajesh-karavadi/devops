@@ -1,0 +1,13 @@
+image:
+  repository: us-east1-docker.pkg.dev/YOUR_PROJECT_ID/java-images/gcp-docker-java-app
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 8080
+
+replicaCount: 1
+
+resources: {}
