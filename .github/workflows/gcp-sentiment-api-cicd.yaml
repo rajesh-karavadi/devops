@@ -1,4 +1,4 @@
-name: Sentiment API
+name: GCP Sentiment API
 
 on:
   push:
@@ -8,6 +8,10 @@ on:
 
 permissions:
   contents: write
+
+defaults:
+  run:
+    working-directory: gcp-sentiment-api
 
 jobs:
   deploy:
