@@ -19,3 +19,8 @@ variable "image" {
   type        = string
   description = "Docker image (from Docker Hub or Artifact Registry)"
 }
+
+variable "cicd_sa_email" {
+  type        = string
+  description = "CI/CD service account email (e.g. terraform-cicd@project.iam.gserviceaccount.com)"
+}
