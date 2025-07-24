@@ -23,7 +23,7 @@ defaults:
 
 jobs:
   terraform:
-    name: GCP Static Website Infra CI/CD
+    name: GCP Static Website Infra Workflow
     runs-on: ubuntu-latest
 
     steps:

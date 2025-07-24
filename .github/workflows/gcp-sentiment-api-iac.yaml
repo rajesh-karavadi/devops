@@ -16,7 +16,7 @@ defaults:
 
 jobs:
   terraform:
-    name: GCP Infra CI/CD for Sentiment API
+    name: GCP Sentiment API IaC Workflow
     runs-on: ubuntu-latest
 
     steps:
