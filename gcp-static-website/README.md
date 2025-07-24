@@ -2,13 +2,15 @@
 
 This project demonstrates how to deploy a static HTML website to **Google Cloud Storage (GCS)** using **Terraform** and **GitHub Actions**
 
-#### `Project Structure:`
+#### Project Structure:
 ~~~~
 gcp-static-website/
 ├── infra/ # Terraform files to provision GCS bucket
 │ └── terraform.tfvars # Variables including project_id and bucket_name
 └── src/ # Static HTML files to upload to GCS
 ~~~~
+
+#### Covers: GCS, Cloud CDN, IAM, Terraform, GitHub Actions
 
 ---
 
