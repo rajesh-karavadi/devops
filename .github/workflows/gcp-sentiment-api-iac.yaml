@@ -1,4 +1,4 @@
-name: GCP Sentiment API IaC
+name: GCP-Static-Website-IaC-Pipeline
 
 on:
   push:

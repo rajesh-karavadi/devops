@@ -1,4 +1,4 @@
-name: Code Deploy to GCP Static Website
+name: GCP-Static-Website-Sourcecode-Pipeline
 
 on:
   push:

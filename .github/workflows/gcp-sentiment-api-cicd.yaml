@@ -1,4 +1,4 @@
-name: GCP Sentiment API CICD
+name: GCP-Sentiment-API-Pipeline
 
 on:
   push:
