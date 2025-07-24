@@ -1,4 +1,4 @@
-name: GCP-Sentiment-API-Pipeline
+name: GCP-Sentiment-API-Wf
 
 on:
   push:

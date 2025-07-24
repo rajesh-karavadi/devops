@@ -1,4 +1,4 @@
-name: GCP-Static-Website-IaC-Pipeline
+name: GCP-Static-Website-IaC-Wf
 
 on:
   push:

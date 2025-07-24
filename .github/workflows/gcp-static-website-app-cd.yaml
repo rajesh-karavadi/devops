@@ -1,4 +1,4 @@
-name: GCP-Static-Website-Sourcecode-Pipeline
+name: GCP-Static-Website-Wf
 
 on:
   push:
