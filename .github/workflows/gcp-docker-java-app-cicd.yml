@@ -23,7 +23,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Package JAR with Maven (in subfolder)
-        working-directory: ./${APP_NAME}
+        working-directory: ${{ github.workspace }}/${{ env.APP_NAME }}
         run: mvn clean package
 
   docker-build-and-push:
