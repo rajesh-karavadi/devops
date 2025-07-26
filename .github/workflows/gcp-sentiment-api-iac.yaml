@@ -14,6 +14,10 @@ defaults:
   run:
     working-directory: gcp-sentiment-api/iac
 
+env:
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api
+  IMAGE_TAG: v7
+
 jobs:
   terraform:
     name: GCP Sentiment API IaC Workflow
@@ -42,8 +46,10 @@ jobs:
       - name: Build & Push Docker Image
         run: |
           docker build -t rajesh.krvd/gcp-sentiment-api:latest ./../
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker push rajesh.krvd/gcp-sentiment-api:latest
+
+      - name: Push Docker image
+        run: |
+          docker push $IMAGE_NAME
 
       - name: 🧪 Terraform Init
         run: terraform init
