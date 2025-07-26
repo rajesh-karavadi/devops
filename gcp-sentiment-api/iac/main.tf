@@ -20,8 +20,8 @@ resource "google_cloud_run_service" "sentiment_api" {
             cpu    = "1"
           }
         }
-        timeout_seconds = 60
       }
+      timeout_seconds = 60
     }
 
     metadata {
