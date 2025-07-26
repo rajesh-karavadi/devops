@@ -26,6 +26,7 @@ jobs:
         working-directory: ${{ github.workspace }}/${{ env.APP_NAME }}
         run: mvn clean package
 
+
   docker-build-and-push:
     runs-on: ubuntu-latest
 
