@@ -15,6 +15,7 @@ defaults:
 
 env:
   IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api
+  APP_NAME: gcp-sentiment-api
 
 jobs:
   deploy:
@@ -43,13 +44,28 @@ jobs:
           docker build -t $IMAGE_NAME .
           docker push $IMAGE_NAME
 
-      - name: 🚀 Deploy to Cloud Run using Docker Hub image
-        run: |
-          REGION="us-east1"
-          SERVICE_NAME="gcp-sentiment-api"
+#      - name: 🚀 Deploy to Cloud Run using Docker Hub image
+#        run: |
+#          REGION="us-east1"
+#          SERVICE_NAME="gcp-sentiment-api"
+#
+#          gcloud run deploy $SERVICE_NAME \
+#            --image $IMAGE_NAME \
+#            --platform managed \
+#            --region $REGION \
+#            --allow-unauthenticated
 
-          gcloud run deploy $SERVICE_NAME \
-            --image $IMAGE_NAME \
-            --platform managed \
-            --region $REGION \
-            --allow-unauthenticated
+
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v1
+        with:
+          service: gcp-sentiment-api
+          image: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ai-images/${APP_NAME}:${{ github.sha }}
+          region: us-east1
+
+      - name: Make Cloud Run service public
+        run: |
+          gcloud run services add-iam-policy-binding ${APP_NAME} \
+            --member="allUsers" \
+            --role="roles/run.invoker" \
+            --region=us-east1
