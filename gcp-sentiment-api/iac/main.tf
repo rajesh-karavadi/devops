@@ -10,7 +10,8 @@ resource "google_cloud_run_service" "sentiment_api" {
   template {
     spec {
       containers {
-        image = "docker.io/rajesh.krvd/gcp-sentiment-api:1.0.1"
+        image = "gcr.io/cloudrun/hello"
+
         ports {
           container_port = 8080
         }
