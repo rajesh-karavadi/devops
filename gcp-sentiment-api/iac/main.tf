@@ -29,12 +29,6 @@ resource "google_cloud_run_service" "sentiment_api" {
     latest_revision = true
   }
 
-  lifecycle {
-    ignore_changes = [
-      metadata[0].annotations,
-      metadata[0].labels
-    ]
-  }
 }
 
 resource "google_cloud_run_service_iam_member" "public_access" {
