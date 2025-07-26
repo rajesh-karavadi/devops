@@ -47,17 +47,17 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/${APP_NAME}:${{ github.sha }} ./${APP_NAME}
+          docker build -t us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${APP_NAME}:${{ github.sha }} ./${APP_NAME}
 
       - name: Push Docker image
         run: |
-          docker push us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/${APP_NAME}:${{ github.sha }}
+          docker push us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${APP_NAME}:${{ github.sha }}
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
         with:
           service: gcp-docker-java-app
-          image: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/java-images/${APP_NAME}:${{ github.sha }}
+          image: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${APP_NAME}:${{ github.sha }}
           region: us-east1
 
       - name: Make Cloud Run service public
