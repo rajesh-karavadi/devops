@@ -12,7 +12,7 @@ on:
 
 defaults:
   run:
-    working-directory: gcp-sentiment-api/iac
+    working-directory: gcp-sentiment-api
 
 env:
   IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api
@@ -43,13 +43,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build & Push Docker Image
+      - name: Build Docker Image
         run: |
-          docker build -t rajesh.krvd/gcp-sentiment-api:latest ./../
+          docker build -t rajesh.krvd/gcp-sentiment-api:latest ./iac/
 
       - name: Push Docker image
         run: |
-          docker push $IMAGE_NAME
+          docker push $IMAGE_NAME ./iac/
 
       - name: 🧪 Terraform Init
         run: terraform init
