@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'gcp-docker-java-app/app/**'
+      - 'gcp-docker-java-app/**'
 env:
   APP_NAME: gcp-docker-java-app
 
