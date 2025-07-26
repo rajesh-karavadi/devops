@@ -38,11 +38,13 @@ jobs:
       - name: 🐳 Login to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-      - name: 🛠️ Build and Push Docker Image to Docker Hub
+      - name: 🛠️ Docker Image Build and Push Docker Image to Docker Hub
         run: |
+          docker build -t us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ai-images/${APP_NAME}:${{ github.sha }} .
 
-          docker build -t $IMAGE_NAME .
-          docker push $IMAGE_NAME
+      - name: 🛠️ Docker Image Push to Docker Hub
+        run: |
+          docker push us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ai-images/${APP_NAME}:${{ github.sha }}
 
 #      - name: 🚀 Deploy to Cloud Run using Docker Hub image
 #        run: |
