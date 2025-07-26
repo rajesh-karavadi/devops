@@ -37,7 +37,6 @@ resource "google_cloud_run_service" "sentiment_api" {
     percent         = 100
     latest_revision = true
   }
-
 }
 
 resource "google_cloud_run_service_iam_member" "public_access" {
