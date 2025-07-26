@@ -1,6 +1,7 @@
 provider "google" {
   project = var.project_id
   region  = var.region
+  credentials = file("key.json")
 }
 
 resource "google_cloud_run_service" "sentiment_api" {
