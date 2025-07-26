@@ -15,9 +15,14 @@ variable "service_name" {
   description = "Cloud Run service name"
 }
 
-variable "image" {
+variable "image_name" {
+  description = "Docker image name"
   type        = string
-  description = "Docker image (from Docker Hub or Artifact Registry)"
+}
+
+variable "image_tag" {
+  description = "Docker image tag"
+  type        = string
 }
 
 variable "cicd_sa_email" {

@@ -16,7 +16,7 @@ defaults:
 
 env:
   IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api
-  IMAGE_TAG: v7
+  IMAGE_TAG: ${{ github.event.inputs.image_tag || github.event.client_payload.image_tag || '1.0.1' }}
 
 jobs:
   terraform:
@@ -45,4 +45,4 @@ jobs:
 
       - name: ✅ Terraform Apply (main branch only)
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        run: terraform apply -auto-approve -var-file="terraform.tfvars"
+        run: terraform apply -auto-approve -var="image_name=${{ env.IMAGE_NAME }}" -var="image_tag=${{ env.IMAGE_TAG }}"
