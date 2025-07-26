@@ -10,10 +10,17 @@ resource "google_cloud_run_service" "sentiment_api" {
   template {
     spec {
       containers {
-        image = var.image_name
+        image = "docker.io/rajesh.krvd/gcp-sentiment-api:1.0.1"
         ports {
           container_port = 8080
         }
+        resources {
+          limits = {
+            memory = "512Mi"
+            cpu    = "1"
+          }
+        }
+        timeout_seconds = 60
       }
     }
 
