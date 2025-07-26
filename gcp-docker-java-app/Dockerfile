@@ -5,7 +5,7 @@ FROM openjdk:11-jdk-slim
 WORKDIR /app
 
 # Copy app
-COPY ./src /src
+COPY . .
 
 # Build the app using Maven
 RUN apt-get update && apt-get install -y maven && \
