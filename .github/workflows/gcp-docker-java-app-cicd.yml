@@ -45,14 +45,14 @@ jobs:
       - name: Set up Docker to use gcloud as a credential helper
         run: gcloud auth configure-docker us-east1-docker.pkg.dev
 
+      - name: 🐳 Login to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
       - name: Build Docker image
         run: |
           pwd
           docker build -t docker.io/rajeshkrvd/${{ env.APP_NAME }}:${{ github.sha }} ./gcp-docker-java-app
           ls
-
-      - name: 🔐 Log in to Docker Hub
-        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Push Docker image
         run: |
