@@ -10,7 +10,7 @@ resource "google_cloud_run_service" "sentiment_api" {
   template {
     spec {
       containers {
-        image = var.image
+        image = var.image_name
         ports {
           container_port = 8080
         }
