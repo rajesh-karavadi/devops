@@ -51,6 +51,9 @@ jobs:
           docker build -t docker.io/rajeshkrvd/${{ env.APP_NAME }}:${{ github.sha }} ./gcp-docker-java-app
           ls
 
+      - name: 🔐 Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
       - name: Push Docker image
         run: |
           pwd
