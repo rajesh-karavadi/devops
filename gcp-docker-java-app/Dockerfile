@@ -12,4 +12,4 @@ RUN apt-get update && apt-get install -y maven && \
     mvn clean package -DskipTests
 
 # Run the app
-CMD ["java", "-jar", "target/java-docker-app-1.0-SNAPSHOT-jar-with-dependencies.jar"]
+CMD ["java", "-jar", "target/gcp-java-docker-app-1.0-SNAPSHOT-jar-with-dependencies.jar"]
