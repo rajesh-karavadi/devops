@@ -3,6 +3,14 @@ provider "google" {
   region  = var.region
 }
 
+resource "google_artifact_registry_repository" "java_docker_repo" {
+  provider     = google
+  location     = "us-east1"
+  repository_id = "java-images"
+  format       = "DOCKER"
+  description  = "Docker repository for Java apps"
+}
+
 resource "google_cloud_run_service" "java_app" {
   name     = var.service_name
   location = var.region
