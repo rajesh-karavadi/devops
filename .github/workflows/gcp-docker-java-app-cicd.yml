@@ -47,6 +47,7 @@ jobs:
 
       - name: Build Docker image
         run: |
+          pwd
           docker build -t docker.io/rajeshkrvd/${{ env.APP_NAME }}:${{ github.sha }} .
 
       - name: Push Docker image
