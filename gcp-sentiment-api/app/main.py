@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from textblob import TextBlob
+import os
 
 app = Flask(__name__)
 
@@ -26,3 +27,5 @@ def analyze_sentiment():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port, debug=True)
