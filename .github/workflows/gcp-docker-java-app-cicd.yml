@@ -48,10 +48,13 @@ jobs:
       - name: Build Docker image
         run: |
           pwd
-          docker build -t docker.io/rajeshkrvd/${{ env.APP_NAME }}:${{ github.sha }} .
+          docker build -t docker.io/rajeshkrvd/${{ env.APP_NAME }}:${{ github.sha }} ./gcp-docker-java-app
+          ls
 
       - name: Push Docker image
         run: |
+          pwd
+          ls
           docker push docker.io/rajeshkrvd/${{ env.APP_NAME }}:${{ github.sha }}
 
       - name: Deploy to Cloud Run
