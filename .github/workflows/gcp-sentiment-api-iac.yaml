@@ -12,7 +12,7 @@ on:
 
 defaults:
   run:
-    working-directory: gcp-sentiment-api
+    working-directory: gcp-sentiment-api/iac
 
 env:
   IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api
@@ -41,9 +41,9 @@ jobs:
         run: terraform init
 
       - name: 📊 Terraform Plan
-        run: terraform plan -var-file="./iac/terraform.tfvars"
+        run: terraform plan -var-file="terraform.tfvars"
 
       - name: ✅ Terraform Apply (main branch only)
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        run: terraform apply -auto-approve -var-file="./iac/terraform.tfvars"
+        run: terraform apply -auto-approve -var-file="terraform.tfvars"
 
