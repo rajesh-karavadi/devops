@@ -44,7 +44,6 @@ jobs:
         run: |
           REGION="us-east1"
           SERVICE_NAME="gcp-sentiment-api"
-          IMAGE_NAME="docker.io/${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api"
 
           gcloud run deploy $SERVICE_NAME \
             --image $IMAGE_NAME \
