@@ -44,7 +44,7 @@ jobs:
 
       - name: 🛠️ Docker Image Push to Docker Hub
         run: |
-          docker.io/rajeshkrvd/gcp-sentiment-api
+          docker push docker.io/rajeshkrvd/gcp-sentiment-api
 
 #      - name: 🚀 Deploy to Cloud Run using Docker Hub image
 #        run: |
