@@ -40,11 +40,11 @@ jobs:
 
       - name: 🛠️ Docker Image Build and Push Docker Image to Docker Hub
         run: |
-          docker build -t us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ai-images/${APP_NAME}:${{ github.sha }} .
+          docker build -t docker.io/rajeshkrvd/${APP_NAME} .
 
       - name: 🛠️ Docker Image Push to Docker Hub
         run: |
-          docker push us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ai-images/${APP_NAME}:${{ github.sha }}
+          docker.io/rajeshkrvd/gcp-sentiment-api
 
 #      - name: 🚀 Deploy to Cloud Run using Docker Hub image
 #        run: |
@@ -57,17 +57,17 @@ jobs:
 #            --region $REGION \
 #            --allow-unauthenticated
 
-
-      - name: Deploy to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v1
-        with:
-          service: gcp-sentiment-api
-          image: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ai-images/${APP_NAME}:${{ github.sha }}
-          region: us-east1
-
-      - name: Make Cloud Run service public
-        run: |
-          gcloud run services add-iam-policy-binding ${APP_NAME} \
-            --member="allUsers" \
-            --role="roles/run.invoker" \
-            --region=us-east1
+#
+#      - name: Deploy to Cloud Run
+#        uses: google-github-actions/deploy-cloudrun@v1
+#        with:
+#          service: gcp-sentiment-api
+#          image: us-east1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ai-images/${APP_NAME}:${{ github.sha }}
+#          region: us-east1
+#
+#      - name: Make Cloud Run service public
+#        run: |
+#          gcloud run services add-iam-policy-binding ${APP_NAME} \
+#            --member="allUsers" \
+#            --role="roles/run.invoker" \
+#            --region=us-east1
