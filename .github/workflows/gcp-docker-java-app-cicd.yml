@@ -47,22 +47,22 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t docker.io/rajeshkrvd/${APP_NAME}:${{ github.sha }} .
+          docker build -t docker.io/rajeshkrvd/${{ env.APP_NAME }}:${{ github.sha }} .
 
       - name: Push Docker image
         run: |
-          docker push docker.io/rajeshkrvd/${APP_NAME}:${{ github.sha }}
+          docker push docker.io/rajeshkrvd/${{ env.APP_NAME }}:${{ github.sha }}
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v1
         with:
           service: gcp-docker-java-app
-          image: docker.io/rajeshkrvd/${APP_NAME}:${{ github.sha }}
+          image: docker.io/rajeshkrvd/${{ env.APP_NAME }}:${{ github.sha }}
           region: us-east1
 
       - name: Make Cloud Run service public
         run: |
-          gcloud run services add-iam-policy-binding ${APP_NAME} \
+          gcloud run services add-iam-policy-binding ${{ env.APP_NAME }} \
             --member="allUsers" \
             --role="roles/run.invoker" \
             --region=us-east1
