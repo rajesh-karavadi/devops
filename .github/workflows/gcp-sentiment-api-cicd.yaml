@@ -40,11 +40,11 @@ jobs:
 
       - name: 🛠️ Docker Image Build
         run: |
-          docker build -t docker.io/rajeshkrvd/gcp-sentiment-api:${{ github.sha }} .
+          docker build -t docker.io/rajeshkrvd/gcp-sentiment-api:latest .
 
       - name: 🛠️ Docker Image Push to Docker Hub
         run: |
-          docker push docker.io/rajeshkrvd/gcp-sentiment-api:${{ github.sha }}
+          docker push docker.io/rajeshkrvd/gcp-sentiment-api:latest
 
       - name: 🚀 Trigger Terraform Deployment
         uses: peter-evans/repository-dispatch@v3
