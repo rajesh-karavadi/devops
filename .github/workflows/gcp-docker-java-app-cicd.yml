@@ -45,6 +45,12 @@ jobs:
           docker build -t $IMAGE_URL ./gcp-docker-java-app
           docker push $IMAGE_URL
 
+      - name: 🔄 Delete existing Cloud Run service (if any)
+        run: |
+          gcloud run services delete $APP_NAME \
+            --region=$REGION \
+            --quiet || echo "No existing service to delete"
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
