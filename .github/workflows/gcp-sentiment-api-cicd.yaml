@@ -19,7 +19,7 @@ env:
 
 jobs:
   deploy:
-    runs-on: ubuntu-1.0.2
+    runs-on: ubuntu-1.0.3
 
     steps:
       - name: 📥 Checkout Repository
@@ -40,11 +40,11 @@ jobs:
 
       - name: 🛠️ Docker Image Build
         run: |
-          docker build -t docker.io/rajeshkrvd/gcp-sentiment-api:1.0.2 .
+          docker build -t docker.io/rajeshkrvd/gcp-sentiment-api:1.0.3 .
 
       - name: 🛠️ Docker Image Push to Docker Hub
         run: |
-          docker push docker.io/rajeshkrvd/gcp-sentiment-api:1.0.2
+          docker push docker.io/rajeshkrvd/gcp-sentiment-api:1.0.3
 
       - name: 🚀 Trigger Terraform Deployment
         uses: peter-evans/repository-dispatch@v3
