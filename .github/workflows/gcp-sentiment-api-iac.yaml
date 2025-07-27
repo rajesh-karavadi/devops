@@ -18,7 +18,7 @@ env:
   APP_NAME: gcp-sentiment-api
   REGION: us-east1
   IMAGE_URL: docker.io/rajeshkrvd/gcp-sentiment-api:${{ github.sha }}
-  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api:${{ github.event.inputs.image_tag || github.event.client_payload.image_tag || '1.0.1' }}
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api:${{ github.event.inputs.image_tag || github.event.client_payload.image_tag || 'latest' }}
 
 jobs:
   terraform:
