@@ -14,9 +14,9 @@ defaults:
     working-directory: gcp-sentiment-api/app
 
 env:
-  IMAGE_TAG: 1.1.0
+  IMAGE_TAG: 1.1.1
   APP_NAME: gcp-sentiment-api
-  IMAGE_NAME: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api:1.1.0
+  IMAGE_NAME: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api:1.1.1
 
 jobs:
   deploy:
