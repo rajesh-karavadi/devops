@@ -5,11 +5,14 @@ on:
     branches: [ main ]
     paths:
       - 'gcp-docker-java-app/**'
+
 env:
   APP_NAME: gcp-docker-java-app
+  REGION: us-east1
+  IMAGE_URL: docker.io/rajeshkrvd/gcp-docker-java-app:${{ github.sha }}
 
 jobs:
-  compile-and-package-jar:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,56 +25,33 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Package JAR with Maven (in subfolder)
-        working-directory: ${{ github.workspace }}/${{ env.APP_NAME }}
+      - name: Package JAR with Maven
+        working-directory: ./gcp-docker-java-app
         run: mvn clean package
-
-
-  docker-build-and-push:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
         with:
           credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
-      - name: Who am I (check auth)
-        run: gcloud auth list
+      - name: Configure Docker for GCP
+        run: gcloud auth configure-docker
 
-      - name: Set up Docker to use gcloud as a credential helper
-        run: gcloud auth configure-docker us-east1-docker.pkg.dev
-
-      - name: 🐳 Login to Docker Hub
+      - name: Docker login to DockerHub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-      - name: Build Docker image
+      - name: Build and Push Docker image
         run: |
-          pwd
-          docker build -t docker.io/rajeshkrvd/${{ env.APP_NAME }}:${{ github.sha }} ./gcp-docker-java-app
-          ls
+          docker build -t $IMAGE_URL ./gcp-docker-java-app
+          docker push $IMAGE_URL
 
-      - name: Push Docker image
-        run: |
-          pwd
-          ls
-          docker push docker.io/rajeshkrvd/${{ env.APP_NAME }}:${{ github.sha }}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
-      - name: Deploy to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v1
-        with:
-          service: gcp-docker-java-app
-          image: docker.io/rajeshkrvd/${{ env.APP_NAME }}:${{ github.sha }}
-          region: us-east1
+      - name: Terraform Init
+        working-directory: infra/gcp-docker-java-app
+        run: terraform init
 
-      - name: Make Cloud Run service public
-        run: |
-          gcloud run services add-iam-policy-binding ${{ env.APP_NAME }} \
-            --member="allUsers" \
-            --role="roles/run.invoker" \
-            --region=us-east1
-
-
+      - name: Terraform Apply
+        working-directory: infra/gcp-docker-java-app
+        run: terraform apply -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=${{ env.REGION }}" -var="app_name=${{ env.APP_NAME }}" -var="image=${{ env.IMAGE_URL }}"
