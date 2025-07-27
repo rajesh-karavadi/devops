@@ -14,7 +14,7 @@ defaults:
     working-directory: gcp-sentiment-api/app
 
 env:
-  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api:${{ github.sha }}
   APP_NAME: gcp-sentiment-api
 
 jobs:
@@ -40,11 +40,11 @@ jobs:
 
       - name: 🛠️ Docker Image Build
         run: |
-          docker build -t docker.io/rajeshkrvd/${APP_NAME} .
+          docker build -t docker.io/rajeshkrvd/gcp-sentiment-api:${{ github.sha }} .
 
       - name: 🛠️ Docker Image Push to Docker Hub
         run: |
-          docker push docker.io/rajeshkrvd/gcp-sentiment-api
+          docker push docker.io/rajeshkrvd/gcp-sentiment-api:${{ github.sha }}
 
       - name: 🚀 Trigger Terraform Deployment
         uses: peter-evans/repository-dispatch@v3
