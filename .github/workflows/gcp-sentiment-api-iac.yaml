@@ -48,12 +48,14 @@ jobs:
             --region=$REGION \
             --quiet || echo "No existing service to delete"
 
-      - name: 🧪 Terraform Init
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: gcp-sentiment-api/infra
         run: terraform init
 
-      - name: 📊 Terraform Plan
-        run: terraform plan -var-file="terraform.tfvars"
-
-      - name: ✅ Terraform Apply (main branch only)
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        run: terraform apply -auto-approve -var="image_name=${{ env.IMAGE_NAME }}"
+      - name: Terraform Apply
+        working-directory: gcp-sentiment-api/infra
+        run: terraform apply -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=${{ env.REGION }}" -var="app_name=${{ env.APP_NAME }}" -var="image=${{ env.IMAGE_URL }}"
+        
