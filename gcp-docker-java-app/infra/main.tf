@@ -15,9 +15,21 @@ resource "google_cloud_run_service" "default" {
     }
   }
 
+  metadata {
+    annotations = {
+      "deployment-trigger" = var.image
+    }
+  }
+
   traffic {
     percent         = 100
     latest_revision = true
+  }
+
+  timeouts {
+    create = "5m"
+    update = "5m"
+    delete = "5m"
   }
 }
 
