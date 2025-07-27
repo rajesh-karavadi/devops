@@ -15,6 +15,9 @@ defaults:
     working-directory: gcp-sentiment-api/iac
 
 env:
+  APP_NAME: gcp-sentiment-api
+  REGION: us-east1
+  IMAGE_URL: docker.io/rajeshkrvd/gcp-sentiment-api:${{ github.sha }}
   IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/gcp-sentiment-api:${{ github.event.inputs.image_tag || github.event.client_payload.image_tag || '1.0.1' }}
 
 jobs:
@@ -38,6 +41,12 @@ jobs:
 
       - name: 📝 Write GCP Credentials to key.json
         run: echo '${{ secrets.GCP_CREDENTIALS }}' > key.json
+
+      - name: 🔄 Delete existing Cloud Run service (if any)
+        run: |
+          gcloud run services delete $APP_NAME \
+            --region=$REGION \
+            --quiet || echo "No existing service to delete"
 
       - name: 🧪 Terraform Init
         run: terraform init

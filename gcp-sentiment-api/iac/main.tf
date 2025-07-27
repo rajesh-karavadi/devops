@@ -11,7 +11,7 @@ resource "google_cloud_run_service" "sentiment_api" {
   template {
     spec {
       containers {
-        image = "gcr.io/cloudrun/hello"
+        image = var.image_name
 
         ports {
           container_port = 8080
@@ -23,7 +23,6 @@ resource "google_cloud_run_service" "sentiment_api" {
           }
         }
       }
-      timeout_seconds = 60
     }
 
     metadata {
@@ -36,6 +35,12 @@ resource "google_cloud_run_service" "sentiment_api" {
   traffic {
     percent         = 100
     latest_revision = true
+  }
+
+  timeouts {
+    create = "5m"
+    update = "5m"
+    delete = "5m"
   }
 }
 
