@@ -1,19 +1,12 @@
 import os
-from flask import Flask
-app = Flask(__name__)
-
-# @app.route("/flask/hello")
-# def hello():
-#     return "Hello from Flask ....."
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
-
 from flask import Flask, request, jsonify
 from textblob import TextBlob
-import os
 
 app = Flask(__name__)
+
+@app.route("/flask/test")
+def hello():
+    return "Hello from Flask ....."
 
 @app.route('/')
 def home():
@@ -39,4 +32,3 @@ def analyze_sentiment():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 8080))
     app.run(host='0.0.0.0', port=port, debug=True)
-
