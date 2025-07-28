@@ -43,15 +43,15 @@ jobs:
           done
 
       - name: Destroy Terraform - GCP Docker Java App
-        working-directory: ./gcp-docker-java-app
+        working-directory: ./gcp-docker-java-app/infra
         run: terraform init && terraform destroy -auto-approve
 
-      - name: Destroy Terraform - GCP K8S Flask App
-        working-directory: ./gcp-k8s-flask-app/infra
+      - name: Destroy Terraform - GCP Sentiment API
+        working-directory: ./gcp-sentiment-api/iac
         continue-on-error: true
         run: terraform init && terraform destroy -auto-approve
 
-      - name: Destroy Terraform - GCP TF HTML WS
-        working-directory: ./gcp-tf-html-ws/infra
+      - name: Destroy Terraform - GCP Static Website
+        working-directory: ./gcp-static-website/infra
         continue-on-error: true
         run: terraform init && terraform destroy -auto-approve
