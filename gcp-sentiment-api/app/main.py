@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/flask/test")
 def hello():
-    return "Hello from Flask ..55..."
+    return "Hello from Flask ..5..."
 
 @app.route('/')
 def home():
