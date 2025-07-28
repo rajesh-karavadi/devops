@@ -54,3 +54,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           event-type: deploy-infra
           client-payload: '{"image_tag": "${{ env.IMAGE_TAG }}"}'
+
+      - name: Run Trivy Vulnerability Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/secure-sentiment-api:${{ env.IMAGE_TAG }}
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
