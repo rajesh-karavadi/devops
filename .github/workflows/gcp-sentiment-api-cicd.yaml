@@ -30,18 +30,13 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Upgrade pip and setuptools
-        run: |
-          pip install --upgrade pip
-          pip install --upgrade setuptools>=70.0.0
-
       - name: Install dependencies
         run: pip install -r requirements.txt
 
       - name: Show setuptools version
         run: python -m pip show setuptools
 
-      - name: Show setuptools version
+      - name: Show pip version
         run: python -m pip show pip
 
       - name: 🔐 Authenticate to Google Cloud
@@ -74,6 +69,13 @@ jobs:
           format: table
           exit-code: 1
           ignore-unfixed: true
+
+      - name: IaC Scan with Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: ./gcp-sentiment-api/iac
+          quiet: true
+
 
       - name: 🚀 Trigger Terraform Deployment
         uses: peter-evans/repository-dispatch@v3
