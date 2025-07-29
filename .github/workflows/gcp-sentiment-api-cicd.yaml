@@ -25,6 +25,19 @@ jobs:
       - name: 📥 Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Upgrade pip and setuptools
+        run: |
+          pip install --upgrade pip
+          pip install --upgrade setuptools>=70.0.0
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
       - name: 🔐 Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
