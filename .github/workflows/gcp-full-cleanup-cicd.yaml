@@ -1,9 +1,9 @@
 name: Full GCP Cleanup
 
 on:
-  schedule:
+#  schedule:
 #    - cron: '30 6 * * *'  # 12:00 PM IST daily
-    - cron: '*/10 * * * *'  # For every 10mins
+#    - cron: '*/10 * * * *'  # For every 10mins
   workflow_dispatch:  # Manual trigger
 
 jobs:
