@@ -38,6 +38,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Show setuptools version
+        run: python -m pip show setuptools
+
       - name: 🔐 Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
