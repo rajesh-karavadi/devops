@@ -41,6 +41,9 @@ jobs:
       - name: Show setuptools version
         run: python -m pip show setuptools
 
+      - name: Show setuptools version
+        run: python -m pip show pip
+
       - name: 🔐 Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
