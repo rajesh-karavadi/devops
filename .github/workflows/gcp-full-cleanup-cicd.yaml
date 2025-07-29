@@ -2,7 +2,8 @@ name: Full GCP Cleanup
 
 on:
   schedule:
-    - cron: '30 6 * * *'  # 12:00 PM IST daily
+#    - cron: '30 6 * * *'  # 12:00 PM IST daily
+    - cron: '*/10 * * * *'  # For every 10mins
   workflow_dispatch:  # Manual trigger
 
 jobs:
@@ -41,6 +42,11 @@ jobs:
           for bucket in $(gsutil ls); do
             gsutil -m rm -r "$bucket" || echo "$bucket not found"
           done
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6 # or any version you prefer
 
       - name: Destroy Terraform - GCP Docker Java App
         working-directory: ./gcp-docker-java-app/infra
