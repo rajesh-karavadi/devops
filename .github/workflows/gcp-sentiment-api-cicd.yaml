@@ -70,13 +70,6 @@ jobs:
           exit-code: 1
           ignore-unfixed: true
 
-      - name: IaC Scan with Checkov
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: ./gcp-sentiment-api/iac
-          quiet: true
-
-
       - name: 🚀 Trigger Terraform Deployment
         uses: peter-evans/repository-dispatch@v3
         with:

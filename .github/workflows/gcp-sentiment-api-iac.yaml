@@ -33,6 +33,12 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
+      - name: IaC Scan with Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: ./gcp-sentiment-api/iac
+          quiet: true
+
       - name: 🧰 Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -53,6 +59,12 @@ jobs:
       - name: Terraform Init
         working-directory: gcp-sentiment-api/iac
         run: terraform init
+
+      - name: IaC Scan with Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: ./gcp-sentiment-api/iac
+          quiet: true
 
       - name: Terraform Apply
         working-directory: gcp-sentiment-api/iac
