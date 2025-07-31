@@ -28,3 +28,4 @@ resource "google_project_iam_member" "sa_user" {
   role    = "roles/iam.serviceAccountUser"
   member  = "serviceAccount:${var.cicd_sa_email}"
 }
+
