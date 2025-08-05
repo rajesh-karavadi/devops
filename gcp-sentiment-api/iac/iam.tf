@@ -23,9 +23,14 @@ resource "google_project_iam_member" "cicd_run_deployer_binding" {
 #   member  = "serviceAccount:${var.cicd_sa_email}"
 # }
 
-resource "google_project_iam_member" "sa_user" {
-  project = var.project_id
-  role    = "roles/iam.serviceAccountUser"
-  member  = "serviceAccount:${var.cicd_sa_email}"
-}
+# resource "google_project_iam_member" "sa_user" {
+#   project = var.project_id
+#   role    = "roles/iam.serviceAccountUser"
+#   member  = "serviceAccount:${var.cicd_sa_email}"
+# }
 
+resource "google_service_account_iam_member" "limited_sa_user" {
+  service_account_id = "projects/${var.project_id}/serviceAccounts/${var.cicd_sa_email}"
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:${var.cicd_sa_email}"
+}
