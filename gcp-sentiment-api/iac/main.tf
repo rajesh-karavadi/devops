@@ -27,7 +27,7 @@ resource "google_cloud_run_service" "default" {
   }
 
   timeouts {
-    create = "5m"
+    create = "15m"
     update = "5m"
     delete = "5m"
   }
