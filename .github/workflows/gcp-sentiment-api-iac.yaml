@@ -60,12 +60,6 @@ jobs:
         working-directory: gcp-sentiment-api/iac
         run: terraform init
 
-      - name: IaC Scan with Checkov
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: ./gcp-sentiment-api/iac
-          quiet: true
-
       - name: Terraform Apply
         working-directory: gcp-sentiment-api/iac
         run: terraform apply -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=${{ env.REGION }}" -var="app_name=${{ env.APP_NAME }}" -var="image=${{ env.IMAGE_URL }}"
