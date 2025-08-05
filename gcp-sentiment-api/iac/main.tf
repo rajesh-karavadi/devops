@@ -40,7 +40,7 @@ resource "google_cloud_run_service" "default" {
 #   member   = "allUsers"
 # }
 
-resource "google_cloud_run_service_iam_member" "invoker" {
+resource "google_cloud_run_service_iam_member" "sainvoker" {
   location = var.region
   service  = google_cloud_run_service.default.name
   role     = "roles/run.invoker"
