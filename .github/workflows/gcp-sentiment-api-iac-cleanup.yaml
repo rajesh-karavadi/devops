@@ -1,0 +1,46 @@
+name: GCP-Sentiment-API-Destroy-Wf
+
+on:
+#  schedule:
+    # Runs every day at 18:30 UTC (12:00 AM IST next day)
+#    - cron: "30 18 * * *"
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: gcp-sentiment-api/iac
+
+env:
+  APP_NAME: gcp-sentiment-api
+  REGION: us-east1
+
+jobs:
+  terraform-destroy:
+    name: GCP Sentiment API Destroy Workflow
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 🔐 Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: 🧰 Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: 📝 Write GCP Credentials to key.json
+        run: echo '${{ secrets.GCP_CREDENTIALS }}' > key.json
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve \
+          -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
+          -var="region=${{ env.REGION }}" \
+          -var="app_name=${{ env.APP_NAME }}"
