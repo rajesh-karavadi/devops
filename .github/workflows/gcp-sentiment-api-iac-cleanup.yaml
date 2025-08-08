@@ -40,7 +40,4 @@ jobs:
         run: terraform init
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve \
-          -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
-          -var="region=${{ env.REGION }}" \
-          -var="app_name=${{ env.APP_NAME }}"
+        run: terraform destroy -auto-approve -var="project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=${{ env.REGION }}" -var="app_name=${{ env.APP_NAME }}"
