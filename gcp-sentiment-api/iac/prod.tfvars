@@ -1,0 +1,6 @@
+project_id     = "peerless-robot-426711-j3"
+region         = "us-east1"
+app_name       = "gcp-sentiment-api"
+image          = "docker.io/rajeshkrvd/gcp-sentiment-api:1.1.6"
+cicd_sa_email  = "terraform-cicd@peerless-robot-426711-j3.iam.gserviceaccount.com"
+invoker_member = "user:rajesh.krvd@gmail.com"

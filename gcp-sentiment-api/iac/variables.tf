@@ -3,3 +3,4 @@ variable "region" {}
 variable "app_name" {}
 variable "image" {}
 variable "cicd_sa_email" {}
+variable "invoke_member" {}
