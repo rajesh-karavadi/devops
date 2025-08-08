@@ -33,9 +33,16 @@ resource "google_cloud_run_service" "default" {
   }
 }
 
-resource "google_cloud_run_service_iam_member" "sainvoker" {
-  location = var.region
+# resource "google_cloud_run_service_iam_member" "sainvoker" {
+#   location = var.region
+#   service  = google_cloud_run_service.default.name
+#   role     = "roles/run.invoker"
+#   member   = "serviceAccount:${var.cicd_sa_email}"
+# }
+
+resource "google_cloud_run_service_iam_member" "public_invoker" {
   service  = google_cloud_run_service.default.name
+  location = var.region
   role     = "roles/run.invoker"
-  member   = "serviceAccount:${var.cicd_sa_email}"
+  member   = "allUsers"
 }
