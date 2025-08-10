@@ -15,6 +15,9 @@ defaults:
     working-directory: gcp-sentiment-api/iac
 
 env:
+  TF_BUCKET: tf-state-myproj
+  TF_STATE_PREFIX: env/dev
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   APP_NAME: gcp-sentiment-api
   REGION: us-east1
   IMAGE_URL: docker.io/rajeshkrvd/gcp-sentiment-api:1.1.6
@@ -41,6 +44,13 @@ jobs:
           directory: ./gcp-sentiment-api/iac
           quiet: true
 
+      - name: Create GCS bucket for Terraform state if not exists
+        run: |
+          if ! gsutil ls -b gs://${TF_BUCKET} >/dev/null 2>&1; then
+            gsutil mb -l ${REGION} gs://${TF_BUCKET}
+            gsutil versioning set on gs://${TF_BUCKET}
+          fi
+
       - name: 🧰 Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -60,7 +70,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: gcp-sentiment-api/iac
-        run: terraform init
+        run: terraform init -backend-config="bucket=${TF_BUCKET}" -backend-config="prefix=${TF_STATE_PREFIX}" -backend-config="project=${PROJECT_ID}"
 
       - name: Terraform Apply
         working-directory: gcp-sentiment-api/iac
