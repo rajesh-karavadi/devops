@@ -80,4 +80,3 @@ jobs:
       - name: Terraform Apply
         working-directory: gcp-sentiment-api/iac
         run: terraform apply -var-file=dev.tfvars -auto-approve
-        
