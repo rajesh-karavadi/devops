@@ -58,6 +58,11 @@ jobs:
             --region=$REGION \
             --quiet || echo "No existing service to delete"
 
+      - name: Setup gcloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
       - name: Create GCS bucket for Terraform state if not exists
         run: |
           if ! gsutil ls -b gs://${TF_BUCKET} >/dev/null 2>&1; then
