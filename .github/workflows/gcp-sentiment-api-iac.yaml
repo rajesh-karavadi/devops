@@ -44,13 +44,6 @@ jobs:
           directory: ./gcp-sentiment-api/iac
           quiet: true
 
-      - name: Create GCS bucket for Terraform state if not exists
-        run: |
-          if ! gsutil ls -b gs://${TF_BUCKET} >/dev/null 2>&1; then
-            gsutil mb -l ${REGION} gs://${TF_BUCKET}
-            gsutil versioning set on gs://${TF_BUCKET}
-          fi
-
       - name: 🧰 Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -64,6 +57,13 @@ jobs:
           gcloud run services delete $APP_NAME \
             --region=$REGION \
             --quiet || echo "No existing service to delete"
+
+      - name: Create GCS bucket for Terraform state if not exists
+        run: |
+          if ! gsutil ls -b gs://${TF_BUCKET} >/dev/null 2>&1; then
+            gsutil mb -l ${REGION} gs://${TF_BUCKET}
+            gsutil versioning set on gs://${TF_BUCKET}
+          fi
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
