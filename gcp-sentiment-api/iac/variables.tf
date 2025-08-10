@@ -4,3 +4,8 @@ variable "app_name" {}
 variable "image" {}
 variable "cicd_sa_email" {}
 variable "invoke_member" {}
+
+variable "environment" {
+  type    = string
+  default = "dev"
+}

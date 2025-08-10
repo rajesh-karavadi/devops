@@ -40,11 +40,6 @@ resource "google_cloud_run_service" "default" {
 #   member   = "serviceAccount:${var.cicd_sa_email}"
 # }
 
-variable "environment" {
-  type    = string
-  default = "dev"
-}
-
 # Only allow a specific Google account
 resource "google_cloud_run_service_iam_member" "user_invoker" {
   service  = google_cloud_run_service.default.name
@@ -52,5 +47,3 @@ resource "google_cloud_run_service_iam_member" "user_invoker" {
   role     = "roles/run.invoker"
   member   = var.invoke_member
 }
-
-
