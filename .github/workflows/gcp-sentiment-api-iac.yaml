@@ -23,6 +23,8 @@ jobs:
   terraform:
     name: GCP Sentiment API IaC Workflow
     runs-on: ubuntu-latest
+    env:
+      TF_LOG: DEBUG
 
     steps:
       - name: 📥 Checkout Repository
