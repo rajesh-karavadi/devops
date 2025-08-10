@@ -15,9 +15,6 @@ defaults:
     working-directory: gcp-sentiment-api/iac
 
 env:
-  TF_BUCKET: tf-state-myproj
-  TF_STATE_PREFIX: env/dev
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   APP_NAME: gcp-sentiment-api
   REGION: us-east1
   IMAGE_URL: docker.io/rajeshkrvd/gcp-sentiment-api:1.1.6
@@ -33,48 +30,38 @@ jobs:
       - name: 📥 Checkout Repository
         uses: actions/checkout@v3
 
+      - name: 🔐 Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
       - name: IaC Scan with Checkov
         uses: bridgecrewio/checkov-action@master
         with:
           directory: ./gcp-sentiment-api/iac
           quiet: true
 
-      # Authenticate with GCP
-      - name: Set up gcloud CLI
-        uses: google-github-actions/setup-gcloud@v2
+      - name: 🧰 Set up Terraform
+        uses: hashicorp/setup-terraform@v3
         with:
-          project_id: ${{ env.PROJECT_ID }}
-          workload_identity_provider: projects/123456789/locations/global/workloadIdentityPools/github-pool/providers/github-provider
-          service_account: github-actions-sa@${{ env.PROJECT_ID }}.iam.gserviceaccount.com
+          terraform_version: 1.6.6
 
-      - name: Enable GCS bucket for state
+      - name: 📝 Write GCP Credentials to key.json
+        run: echo '${{ secrets.GCP_CREDENTIALS }}' > key.json
+
+      - name: 🔄 Delete existing Cloud Run service (if any)
         run: |
-          if ! gsutil ls -b gs://${{ env.BUCKET_NAME }}; then
-            gsutil mb -l ${{ env.REGION }} gs://${{ env.BUCKET_NAME }}
-            gsutil versioning set on gs://${{ env.BUCKET_NAME }}
-          fi
+          gcloud run services delete $APP_NAME \
+            --region=$REGION \
+            --quiet || echo "No existing service to delete"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.9.5
 
       - name: Terraform Init
-        run: |
-          terraform init \
-            -backend-config="bucket=${{ env.BUCKET_NAME }}" \
-            -backend-config="prefix=terraform/state"
-
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan
-
-      - name: Terraform Init
-        run: terraform init \
-          -backend-config="bucket=${TF_BUCKET}" \
-          -backend-config="prefix=${TF_STATE_PREFIX}"
+        working-directory: gcp-sentiment-api/iac
+        run: terraform init
 
       - name: Terraform Apply
-        run: terraform apply \
-          -var="project_id=${PROJECT_ID}" \
-          -var-file=dev.tfvars \
-          -auto-approve
+        working-directory: gcp-sentiment-api/iac
+        run: terraform apply -var-file=dev.tfvars -auto-approve
