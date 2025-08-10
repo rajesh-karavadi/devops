@@ -47,4 +47,3 @@ resource "google_cloud_run_service_iam_member" "user_invoker" {
   role     = var.role_type
   member   = var.invoke_member
 }
-
