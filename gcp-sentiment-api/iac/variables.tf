@@ -5,3 +5,4 @@ variable "image" {}
 variable "cicd_sa_email" {}
 variable "invoke_member" {}
 variable "invoke_role" {}
+

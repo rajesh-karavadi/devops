@@ -24,7 +24,7 @@ jobs:
     name: GCP Sentiment API IaC Workflow
     runs-on: ubuntu-latest
     env:
-      TF_LOG: DEBUG
+      TF_LOG: INFO
 
     steps:
       - name: 📥 Checkout Repository
