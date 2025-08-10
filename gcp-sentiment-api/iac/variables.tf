@@ -4,5 +4,7 @@ variable "app_name" {}
 variable "image" {}
 variable "cicd_sa_email" {}
 variable "invoke_member" {}
-variable "role_type" {}
-variable "role_permissions" {}
+variable "role_run_invoker" {}
+variable "run_permissions" {}
+variable "role_storage_objectadmin" {}
+variable "bucket_name" {}

@@ -39,11 +39,3 @@ resource "google_cloud_run_service" "default" {
     delete = "5m"
   }
 }
-
-# Only allow a specific Google account
-resource "google_cloud_run_service_iam_member" "user_invoker" {
-  service  = google_cloud_run_service.default.name
-  location = var.region
-  role     = var.role_type
-  member   = var.invoke_member
-}
