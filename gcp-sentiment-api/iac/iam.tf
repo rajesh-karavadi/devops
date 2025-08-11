@@ -17,6 +17,11 @@ resource "google_storage_bucket" "terraform_state_meta_logs" {
       age = 365
     }
   }
+
+  logging {
+    log_bucket        = google_storage_bucket.terraform_state_meta_logs.name
+    log_object_prefix = "logs-for-log-bucket"
+  }
 }
 
 ##########################
