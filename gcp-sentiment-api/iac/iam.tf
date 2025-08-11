@@ -143,3 +143,15 @@ resource "google_storage_bucket_iam_member" "cicd_sa_viewer" {
   role   = "roles/storage.objectViewer"
   member = "serviceAccount:${var.cicd_sa_email}"
 }
+
+resource "google_storage_bucket_iam_member" "state_admin" {
+  bucket = google_storage_bucket.terraform_state.name
+  role   = "roles/storage.objectAdmin"
+  member = "serviceAccount:${var.cicd_sa_email}"
+}
+
+resource "google_storage_bucket_iam_member" "state_viewer" {
+  bucket = google_storage_bucket.terraform_state.name
+  role   = "roles/storage.objectViewer"
+  member = "serviceAccount:${var.cicd_sa_email}"
+}
