@@ -38,3 +38,8 @@ variable "invoker" {
   description = "Member allowed to invoke Cloud Run (e.g., user:email@example.com)"
   type        = string
 }
+
+variable "deployer_role" {
+  description = "Deployer Role"
+  type        = string
+}

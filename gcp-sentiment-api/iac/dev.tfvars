@@ -5,6 +5,5 @@ image                     = "docker.io/rajeshkrvd/gcp-sentiment-api:1.1.6"
 cicd_sa_email             = "terraform-cicd@peerless-robot-426711-j3.iam.gserviceaccount.com"
 invoker                   = "allUsers"
 invoker_role              = "roles/run.invoker"
-invoker_permissions       = [ "run.services.create","run.services.update" ]
-storage_roles             = [ "roles/storage.objectAdmin", "storage.objects.list" ]
 bucket_name               = "gcp-sentiment-api"
+deployer_role             = "roles/storage.objectAdmin"
