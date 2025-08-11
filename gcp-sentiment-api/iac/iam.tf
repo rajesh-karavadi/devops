@@ -1,5 +1,20 @@
 ##########################
-# Log Bucket (stores access logs)
+# Meta Log Bucket (logs access to the log bucket)
+##########################
+resource "google_storage_bucket" "terraform_state_meta_logs" {
+  name                        = "${var.bucket_name}-meta-logs"
+  location                    = var.bucket_location
+  uniform_bucket_level_access = true
+  force_destroy               = false
+  public_access_prevention    = "enforced"
+
+  versioning {
+    enabled = true
+  }
+}
+
+##########################
+# Log Bucket (stores access logs for state bucket)
 ##########################
 resource "google_storage_bucket" "terraform_state_logs" {
   name                        = "${var.bucket_name}-logs"
@@ -12,7 +27,11 @@ resource "google_storage_bucket" "terraform_state_logs" {
     enabled = true
   }
 
-  # Optional: Keep logs for 1 year
+  logging {
+    log_bucket        = google_storage_bucket.terraform_state_meta_logs.name
+    log_object_prefix = "access-logs"
+  }
+
   lifecycle_rule {
     action {
       type = "Delete"
@@ -24,7 +43,7 @@ resource "google_storage_bucket" "terraform_state_logs" {
 }
 
 ##########################
-# Bootstrap: Create Terraform State Bucket
+# Terraform State Bucket (stores Terraform state)
 ##########################
 resource "google_storage_bucket" "terraform_state" {
   name                        = var.bucket_name
@@ -37,6 +56,11 @@ resource "google_storage_bucket" "terraform_state" {
     enabled = true
   }
 
+  logging {
+    log_bucket        = google_storage_bucket.terraform_state_logs.name
+    log_object_prefix = "access-logs"
+  }
+
   lifecycle_rule {
     action {
       type = "Delete"
@@ -44,11 +68,6 @@ resource "google_storage_bucket" "terraform_state" {
     condition {
       age = 365
     }
-  }
-
-  logging {
-    log_bucket        = google_storage_bucket.terraform_state_logs.name
-    log_object_prefix = "access-logs"
   }
 }
 
