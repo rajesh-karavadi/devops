@@ -1,6 +1,3 @@
-##########################
-# Meta Log Bucket (logs access to the log bucket)
-##########################
 resource "google_storage_bucket" "terraform_state_meta_logs" {
   name                        = "${var.bucket_name}-meta-logs"
   location                    = var.bucket_location
@@ -11,10 +8,19 @@ resource "google_storage_bucket" "terraform_state_meta_logs" {
   versioning {
     enabled = true
   }
+
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+    condition {
+      age = 365
+    }
+  }
 }
 
 ##########################
-# Log Bucket (stores access logs for state bucket)
+# Log Bucket (stores access logs for the state bucket)
 ##########################
 resource "google_storage_bucket" "terraform_state_logs" {
   name                        = "${var.bucket_name}-logs"
@@ -27,11 +33,6 @@ resource "google_storage_bucket" "terraform_state_logs" {
     enabled = true
   }
 
-  logging {
-    log_bucket        = google_storage_bucket.terraform_state_meta_logs.name
-    log_object_prefix = "access-logs"
-  }
-
   lifecycle_rule {
     action {
       type = "Delete"
@@ -39,6 +40,12 @@ resource "google_storage_bucket" "terraform_state_logs" {
     condition {
       age = 365
     }
+  }
+
+  # Log its own access into the meta logs bucket (prevents Checkov CKV_GCP_62 on this resource).
+  logging {
+    log_bucket        = google_storage_bucket.terraform_state_meta_logs.name
+    log_object_prefix = "logs-for-log-bucket"
   }
 }
 
@@ -56,11 +63,6 @@ resource "google_storage_bucket" "terraform_state" {
     enabled = true
   }
 
-  logging {
-    log_bucket        = google_storage_bucket.terraform_state_logs.name
-    log_object_prefix = "access-logs"
-  }
-
   lifecycle_rule {
     action {
       type = "Delete"
@@ -69,10 +71,41 @@ resource "google_storage_bucket" "terraform_state" {
       age = 365
     }
   }
+
+  # Send access logs to the log bucket
+  logging {
+    log_bucket        = google_storage_bucket.terraform_state_logs.name
+    log_object_prefix = "access-logs"
+  }
 }
 
 ##########################
-# Custom Cloud Run Role
+# IAM: GCS minimal roles for Terraform backend
+# These are bucket-level bindings granting the CI/CD SA what Terraform's backend needs:
+# - storage.objectViewer  (list/read)
+# - storage.objectCreator (write)
+# - storage.legacyBucketReader (bucket listing in some setups)
+##########################
+resource "google_storage_bucket_iam_member" "cicd_sa_object_viewer" {
+  bucket = google_storage_bucket.terraform_state.name
+  role   = "roles/storage.objectViewer"
+  member = "serviceAccount:${var.cicd_sa_email}"
+}
+
+resource "google_storage_bucket_iam_member" "cicd_sa_object_creator" {
+  bucket = google_storage_bucket.terraform_state.name
+  role   = "roles/storage.objectCreator"
+  member = "serviceAccount:${var.cicd_sa_email}"
+}
+
+resource "google_storage_bucket_iam_member" "cicd_sa_legacy_bucket_reader" {
+  bucket = google_storage_bucket.terraform_state.name
+  role   = "roles/storage.legacyBucketReader"
+  member = "serviceAccount:${var.cicd_sa_email}"
+}
+
+##########################
+# Custom Cloud Run Role & assignment
 ##########################
 resource "google_project_iam_custom_role" "cicd_run_deployer" {
   project     = var.project_id
@@ -90,31 +123,8 @@ resource "google_project_iam_member" "assign_cicdRunDeployer" {
 }
 
 ##########################
-# Terraform State Bucket Access (Minimal Required)
-##########################
-# Read and list Terraform state files
-resource "google_storage_bucket_iam_member" "cicd_sa_object_viewer" {
-  bucket = google_storage_bucket.terraform_state.name
-  role   = "roles/storage.objectViewer"
-  member = "serviceAccount:${var.cicd_sa_email}"
-}
-
-# Write new Terraform state files
-resource "google_storage_bucket_iam_member" "cicd_sa_object_creator" {
-  bucket = google_storage_bucket.terraform_state.name
-  role   = "roles/storage.objectCreator"
-  member = "serviceAccount:${var.cicd_sa_email}"
-}
-
-# Allow listing objects in the bucket
-resource "google_storage_bucket_iam_member" "cicd_sa_legacy_bucket_reader" {
-  bucket = google_storage_bucket.terraform_state.name
-  role   = "roles/storage.legacyBucketReader"
-  member = "serviceAccount:${var.cicd_sa_email}"
-}
-
-##########################
-# Cloud Run Invoker Restriction
+# Cloud Run invoker restriction (keeps your existing restriction)
+# Assumes google_cloud_run_service.default exists elsewhere in your TF.
 ##########################
 resource "google_cloud_run_service_iam_member" "user_invoker" {
   service  = google_cloud_run_service.default.name
