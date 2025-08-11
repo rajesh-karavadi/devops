@@ -138,12 +138,6 @@ resource "google_cloud_run_service_iam_member" "user_invoker" {
   member   = var.invoker
 }
 
-resource "google_storage_bucket_iam_member" "cicd_sa_viewer" {
-  bucket = var.bucket_name
-  role   = "roles/storage.objectViewer"
-  member = "serviceAccount:${var.cicd_sa_email}"
-}
-
 resource "google_storage_bucket_iam_member" "state_admin" {
   bucket = google_storage_bucket.terraform_state.name
   role   = "roles/storage.objectAdmin"
@@ -153,5 +147,11 @@ resource "google_storage_bucket_iam_member" "state_admin" {
 resource "google_storage_bucket_iam_member" "state_viewer" {
   bucket = google_storage_bucket.terraform_state.name
   role   = "roles/storage.objectViewer"
+  member = "serviceAccount:${var.cicd_sa_email}"
+}
+
+resource "google_storage_bucket_iam_member" "state_list" {
+  bucket = google_storage_bucket.terraform_state.name
+  role   = "roles/storage.objects.list"
   member = "serviceAccount:${var.cicd_sa_email}"
 }
