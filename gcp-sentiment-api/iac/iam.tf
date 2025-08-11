@@ -16,6 +16,7 @@ resource "google_storage_bucket" "terraform_state" {
   location                    = var.bucket_location
   uniform_bucket_level_access = true
   force_destroy               = false
+  public_access_prevention    = "enforced"
 
   versioning {
     enabled = true
@@ -28,6 +29,11 @@ resource "google_storage_bucket" "terraform_state" {
     condition {
       age = 365
     }
+  }
+
+  logging {
+    log_bucket        = google_storage_bucket.terraform_state_logs.name
+    log_object_prefix = "access-logs"
   }
 }
 
