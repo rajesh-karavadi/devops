@@ -1,4 +1,14 @@
 ##########################
+# Log Bucket (stores access logs)
+##########################
+resource "google_storage_bucket" "terraform_state_logs" {
+  name                        = "${var.bucket_name}-logs"
+  location                    = var.bucket_location
+  uniform_bucket_level_access = true
+  force_destroy               = false
+}
+
+##########################
 # Bootstrap: Create Terraform State Bucket
 ##########################
 resource "google_storage_bucket" "terraform_state" {
