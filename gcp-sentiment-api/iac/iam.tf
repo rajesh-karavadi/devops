@@ -6,6 +6,21 @@ resource "google_storage_bucket" "terraform_state_logs" {
   location                    = var.bucket_location
   uniform_bucket_level_access = true
   force_destroy               = false
+  public_access_prevention    = "enforced"
+
+  versioning {
+    enabled = true
+  }
+
+  # Optional: Keep logs for 1 year
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+    condition {
+      age = 365
+    }
+  }
 }
 
 ##########################
