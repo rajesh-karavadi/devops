@@ -1,4 +1,29 @@
+##########################
+# Bootstrap: Create Terraform State Bucket
+##########################
+resource "google_storage_bucket" "terraform_state" {
+  name                        = var.bucket_name
+  location                    = var.bucket_location
+  uniform_bucket_level_access = true
+  force_destroy               = false
 
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+    condition {
+      age = 365
+    }
+  }
+}
+
+##########################
+# Custom Cloud Run Role
+##########################
 resource "google_project_iam_custom_role" "cicd_run_deployer" {
   project     = var.project_id
   role_id     = "cicdRunDeployer"
@@ -7,21 +32,40 @@ resource "google_project_iam_custom_role" "cicd_run_deployer" {
   permissions = var.deployer_permissions
 }
 
-# Give the SA permissions to read/write Terraform state
-resource "google_storage_bucket_iam_member" "cicd_sa_object_admin" {
-  bucket = var.bucket_name
-  role   = var.sa_roles
-  member = "serviceAccount:${var.cicd_sa_email}"
-}
-
 resource "google_project_iam_member" "assign_cicdRunDeployer" {
-  project = var.project_id
-  role    = google_project_iam_custom_role.cicd_run_deployer.name
-  member  = "serviceAccount:${var.cicd_sa_email}"
+  project    = var.project_id
+  role       = google_project_iam_custom_role.cicd_run_deployer.name
+  member     = "serviceAccount:${var.cicd_sa_email}"
   depends_on = [google_project_iam_custom_role.cicd_run_deployer]
 }
 
-# Only allow a specific Google account
+##########################
+# Terraform State Bucket Access (Minimal Required)
+##########################
+# Read and list Terraform state files
+resource "google_storage_bucket_iam_member" "cicd_sa_object_viewer" {
+  bucket = google_storage_bucket.terraform_state.name
+  role   = "roles/storage.objectViewer"
+  member = "serviceAccount:${var.cicd_sa_email}"
+}
+
+# Write new Terraform state files
+resource "google_storage_bucket_iam_member" "cicd_sa_object_creator" {
+  bucket = google_storage_bucket.terraform_state.name
+  role   = "roles/storage.objectCreator"
+  member = "serviceAccount:${var.cicd_sa_email}"
+}
+
+# Allow listing objects in the bucket
+resource "google_storage_bucket_iam_member" "cicd_sa_legacy_bucket_reader" {
+  bucket = google_storage_bucket.terraform_state.name
+  role   = "roles/storage.legacyBucketReader"
+  member = "serviceAccount:${var.cicd_sa_email}"
+}
+
+##########################
+# Cloud Run Invoker Restriction
+##########################
 resource "google_cloud_run_service_iam_member" "user_invoker" {
   service  = google_cloud_run_service.default.name
   location = var.region
