@@ -43,3 +43,8 @@ variable "deployer_role" {
   description = "Deployer Role"
   type        = string
 }
+
+variable "role_objectviewer" {
+  description = "Role ObjectViewer"
+  type        =  string
+}

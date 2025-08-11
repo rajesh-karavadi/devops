@@ -137,3 +137,9 @@ resource "google_cloud_run_service_iam_member" "user_invoker" {
   role     = var.invoker_role
   member   = var.invoker
 }
+
+resource "google_storage_bucket_iam_member" "cicd_sa_viewer" {
+  bucket = var.bucket_name
+  role   = "roles/storage.objectViewer"
+  member = "serviceAccount:${var.cicd_sa_email}"
+}
