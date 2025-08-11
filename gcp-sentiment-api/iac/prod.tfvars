@@ -6,5 +6,5 @@ cicd_sa_email             = "terraform-cicd@peerless-robot-426711-j3.iam.gservic
 invoke_member             = "user:rajesh.krvd@gmail.com"
 role_run_invoker          = "roles/run.invoker"
 run_permissions           = [ "run.services.create","run.services.update" ]
-role_storage_objectadmin  = "roles/storage.objectAdmin"
+role_storage_objectadmin  = [ "roles/storage.objectAdmin", "storage.objects.list" ]
 bucket_name               = "gcp-sentiment-api"

@@ -3,8 +3,10 @@ variable "region" {}
 variable "app_name" {}
 variable "image" {}
 variable "cicd_sa_email" {}
-variable "invoke_member" {}
-variable "role_run_invoker" {}
-variable "run_permissions" {}
-variable "role_storage_objectadmin" {}
+variable "deployer_permissions" {}
+variable "sa_roles" {}
 variable "bucket_name" {}
+variable "invoker" {}
+variable "invoker_role" {}
+variable "invoker_permissions" {}
+variable "storage_roles" {}
