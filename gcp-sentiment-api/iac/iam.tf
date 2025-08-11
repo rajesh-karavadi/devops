@@ -152,6 +152,6 @@ resource "google_storage_bucket_iam_member" "state_viewer" {
 
 resource "google_storage_bucket_iam_member" "state_list" {
   bucket = google_storage_bucket.terraform_state.name
-  role   = "roles/storage.objects.list"
+  role   = "roles/storage.objectsList"
   member = "serviceAccount:${var.cicd_sa_email}"
 }
