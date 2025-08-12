@@ -7,23 +7,15 @@ resource "google_iam_workload_identity_pool" "github_pool" {
   display_name  = "GitHub Actions Pool"
   description   = "Trust for GitHub Actions OIDC"
 }
-
-# 2️⃣ Workload Identity Provider
-resource "google_iam_workload_identity_pool_provider" "github_provider" {
-  project        = var.project_id
-  workload_identity_pool_id = google_iam_workload_identity_pool.github_pool.workload_identity_pool_id
-  workload_identity_pool_provider_id = "github-provider"
-  display_name   = "GitHub OIDC Provider"
-
-  oidc {
-    issuer_uri = "https://token.actions.githubusercontent.com"
-  }
-
-  attribute_mapping = {
-    "google.subject"      = "assertion.sub == 'repo:organization/repository'"
-    "attribute.repository" = "assertion.repository"
-  }
-}
+#
+# # 2️⃣ Workload Identity Provider
+# resource "google_iam_workload_identity_pool_provider" "github_provider" {
+#   project        = var.project_id
+#   workload_identity_pool_id = google_iam_workload_identity_pool.github_pool.workload_identity_pool_id
+#   display_name   = "GitHub OIDC Provider"
+#
+#   attribute_condition = "attribute.from.subject == \"${var.cicd_sa_email}\""
+# }
 
 # 3️⃣ Service Account for Terraform
 resource "google_service_account" "terraform_sa" {
