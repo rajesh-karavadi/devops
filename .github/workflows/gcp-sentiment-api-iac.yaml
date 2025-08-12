@@ -52,9 +52,8 @@ jobs:
 
       - name: Create backend config
         run: |
-          echo "bucket  = \"gcp-sentiment-api-storage\"" > backend.hcl
+          echo "bucket  = \"my-terraform-state-bucket\"" > backend.hcl
           echo "prefix  = \"gcp-sentiment-api/state\"" >> backend.hcl
-          echo "project = \"peerless-robot-426711-j3\"" >> backend.hcl
 
       - name: 🧰 Set up Terraform
         uses: hashicorp/setup-terraform@v3
