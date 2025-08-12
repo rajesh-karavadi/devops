@@ -28,6 +28,10 @@ variable "bucket_location" {
   default     = "US"
 }
 
+variable "cicd_user" {
+  description = "CI/CD User"
+  default     = string
+}
 variable "cicd_sa_email" {
   description = "CI/CD Service Account email"
   type        = string
