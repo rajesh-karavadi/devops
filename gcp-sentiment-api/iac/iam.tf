@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 5.0"
+    }
+  }
+}
+
 resource "google_storage_bucket" "terraform_state_meta_logs" {
   name                        = "${var.bucket_name}-meta-logs"
   location                    = var.bucket_location
@@ -115,7 +124,7 @@ resource "google_storage_bucket_iam_member" "cicd_sa_legacy_bucket_reader" {
 resource "google_project_iam_custom_role" "cicd_run_deployer" {
   project     = var.project_id
   role_id     = "cicdRunDeployer"
-  title       = "CI/CD Run Deployer"
+  title       = var.cicd_sa_email
   description = "Custom role for deploying to Cloud Run"
   permissions = var.deployer_permissions
 }
@@ -147,11 +156,5 @@ resource "google_storage_bucket_iam_member" "state_admin" {
 resource "google_storage_bucket_iam_member" "state_viewer" {
   bucket = google_storage_bucket.terraform_state.name
   role   = "roles/storage.objectViewer"
-  member = "serviceAccount:${var.cicd_sa_email}"
-}
-
-resource "google_storage_bucket_iam_member" "state_list" {
-  bucket = google_storage_bucket.terraform_state.name
-  role   = "roles/storage.objects.list"
   member = "serviceAccount:${var.cicd_sa_email}"
 }
