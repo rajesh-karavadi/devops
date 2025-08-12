@@ -1,65 +1,36 @@
+# variable "region" {}
+# variable "app_name" {}
+# variable "image" {}
+# variable "bucket_name" {}
+# variable "bucket_location" {}
+# variable "cicd_user" {}
+#
+# variable "cicd_sa_email" {}
+# variable "deployer_permissions" {}
+# variable "invoker_role" {}
+#
+# variable "invoker" {}
+# variable "deployer_role" {}
+
 variable "project_id" {
-  description = "GCP Project ID"
+  description = "Your GCP Project ID"
   type        = string
 }
 
-variable "region" {
-  description = "Region"
-  type        = string
+variable "service_account_id" {
+  default     = "terraform-cicd"
+  description = "Service account ID (short name)"
 }
 
-variable "app_name" {
-  description = "App Name"
-  type        = string
-}
-variable "image" {
-  description = "Image"
-  type        = string
+variable "service_account_display_name" {
+  default     = "Terraform CI/CD Service Account"
 }
 
-variable "bucket_name" {
-  description = "GCS bucket for Terraform state"
-  type        = string
-}
-
-variable "bucket_location" {
-  description = "Location for the Terraform state bucket"
-  type        = string
-  default     = "US"
-}
-
-variable "cicd_user" {
-  description = "CICD User"
-  type     = string
-}
-
-variable "cicd_sa_email" {
-  description = "CI/CD Service Account email"
-  type        = string
-}
-
-variable "deployer_permissions" {
-  description = "Permissions for custom Cloud Run deployer role"
+variable "sa_roles" {
+  description = "Roles for the service account"
   type        = list(string)
-}
-
-variable "invoker_role" {
-  description = "Role to allow Cloud Run invocation"
-  type        = string
-  default     = "roles/run.invoker"
-}
-
-variable "invoker" {
-  description = "Member allowed to invoke Cloud Run (e.g., user:email@example.com)"
-  type        = string
-}
-
-variable "deployer_role" {
-  description = "Deployer Role"
-  type        = string
-}
-
-variable "role_objectviewer" {
-  description = "Role ObjectViewer"
-  type        =  string
+  default = [
+    "roles/storage.admin",         # For GCS state file access
+    "roles/iam.serviceAccountUser" # To manage resources as SA
+  ]
 }
