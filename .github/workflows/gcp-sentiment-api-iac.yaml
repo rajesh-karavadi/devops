@@ -56,6 +56,11 @@ jobs:
           echo "prefix  = \"gcp-sentiment-api/state\"" >> backend.hcl
           echo "project = \"${{ secrets.GCP_PROJECT_ID }}\"" >> backend.hcl
 
+      - name: 🧰 Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
       - name: Terraform Init
         run: terraform init -backend-config=backend.hcl
 
