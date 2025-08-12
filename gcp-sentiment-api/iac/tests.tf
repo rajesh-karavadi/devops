@@ -20,7 +20,7 @@ resource "google_iam_workload_identity_pool_provider" "github_provider" {
   }
 
   attribute_mapping = {
-    "google.subject"      = "assertion.sub"
+    "google.subject"      = "assertion.sub == 'repo:organization/repository'"
     "attribute.repository" = "assertion.repository"
   }
 }
