@@ -41,11 +41,6 @@ jobs:
           directory: ./gcp-sentiment-api/iac
           quiet: true
 
-      - name: 🧰 Set up Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.6.6
-
       - name: 📝 Write GCP Credentials to key.json
         run: echo '${{ secrets.GCP_CREDENTIALS }}' > key.json
 
@@ -55,13 +50,21 @@ jobs:
             --region=$REGION \
             --quiet || echo "No existing service to delete"
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - name: Create backend config
+        run: |
+          echo "bucket  = \"${{ secrets.TF_BUCKET }}\"" > backend.hcl
+          echo "prefix  = \"gcp-sentiment-api/state\"" >> backend.hcl
+          echo "project = \"${{ secrets.GCP_PROJECT_ID }}\"" >> backend.hcl
 
       - name: Terraform Init
-        working-directory: gcp-sentiment-api/iac
-        run: terraform init -var-file=dev.tfvars
+        run: terraform init -backend-config=backend.hcl
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -input=false
 
       - name: Terraform Apply
-        working-directory: gcp-sentiment-api/iac
-        run: terraform apply -var-file=dev.tfvars -auto-approve
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve -input=false
