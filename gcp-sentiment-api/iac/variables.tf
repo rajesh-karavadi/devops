@@ -29,9 +29,10 @@ variable "bucket_location" {
 }
 
 variable "cicd_user" {
-  description = "CI/CD User"
-  default     = string
+  description = "CICD User"
+  type     = string
 }
+
 variable "cicd_sa_email" {
   description = "CI/CD Service Account email"
   type        = string
