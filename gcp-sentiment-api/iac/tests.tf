@@ -33,16 +33,16 @@ resource "google_service_account" "terraform_sa" {
 }
 
 # 4️⃣ Grant Minimal Roles (adjust as needed)
-resource "google_project_iam_member" "terraform_roles" {
-  for_each = toset([
-    "roles/storage.admin",       # Example: GCS for Terraform backend
-    "roles/compute.admin",       # Example: Compute
-    "roles/iam.serviceAccountUser" # Needed for impersonating other SAs
-  ])
-  project = var.project_id
-  role    = each.value
-  member  = "serviceAccount:${google_service_account.terraform_sa.email}"
-}
+# resource "google_project_iam_member" "terraform_roles" {
+#   for_each = toset([
+#     "roles/storage.admin",       # Example: GCS for Terraform backend
+#     "roles/compute.admin",       # Example: Compute
+#     "roles/iam.serviceAccountUser" # Needed for impersonating other SAs
+#   ])
+#   project = var.project_id
+#   role    = each.value
+#   member  = "serviceAccount:${google_service_account.terraform_sa.email}"
+# }
 
 # 5️⃣ Allow GitHub to Impersonate this SA
 resource "google_service_account_iam_member" "wif_binding" {
