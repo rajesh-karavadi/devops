@@ -14,6 +14,6 @@ resource "google_service_account_iam_member" "sa_user_binding" {
 }
 
 # 3. Create and download a key (for GitHub Actions)
-resource "google_service_account_key" "terraform_cicd_key" {
-  service_account_id = google_service_account.terraform_cicd.name
-}
+# resource "google_service_account_key" "terraform_cicd_key" {
+#   service_account_id = google_service_account.terraform_cicd.name
+# }
