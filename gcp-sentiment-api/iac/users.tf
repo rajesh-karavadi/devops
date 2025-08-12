@@ -6,11 +6,11 @@ resource "google_service_account" "terraform_cicd" {
 }
 
 # 2. Assign roles to the service account
-resource "google_project_iam_member" "sa_roles_binding" {
-  for_each = toset(var.sa_roles)
-  project  = var.project_id
-  role     = each.key
-  member   = "serviceAccount:${google_service_account.terraform_cicd.email}"
+# Bind IAM role to allow this SA to be used (narrow scope)
+resource "google_service_account_iam_member" "sa_user_binding" {
+  service_account_id = google_service_account.terraform_cicd.name
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:${google_service_account.terraform_cicd.email}"
 }
 
 # 3. Create and download a key (for GitHub Actions)
