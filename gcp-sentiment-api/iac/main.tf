@@ -39,3 +39,4 @@ resource "google_cloud_run_service" "default" {
     delete = "5m"
   }
 }
+
