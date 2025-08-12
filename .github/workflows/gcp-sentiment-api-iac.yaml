@@ -60,7 +60,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: gcp-sentiment-api/iac
-        run: terraform init
+        run: terraform init -var-file=dev.tfvars
 
       - name: Terraform Apply
         working-directory: gcp-sentiment-api/iac

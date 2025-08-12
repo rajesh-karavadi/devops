@@ -7,6 +7,16 @@ variable "region" {
   description = "Region"
   type        = string
 }
+
+variable "app_name" {
+  description = "App Name"
+  type        = string
+}
+variable "image" {
+  description = "Image"
+  type        = string
+}
+
 variable "bucket_name" {
   description = "GCS bucket for Terraform state"
   type        = string
