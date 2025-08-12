@@ -3,7 +3,7 @@
 #   sensitive = true
 #   value     = google_service_account_key.terraform_cicd_key.private_key
 # }
-
-output "terraform_cicd_email" {
-  value = google_service_account.terraform_cicd.email
-}
+#
+# output "terraform_cicd_email" {
+#   value = google_service_account.terraform_cicd.email
+# }
