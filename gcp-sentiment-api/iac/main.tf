@@ -5,7 +5,7 @@ provider "google" {
 
 terraform {
   backend "gcs" {
-    bucket  = "${var.project_id}-tfstate" # create in GCS beforehand
+    bucket  = "peerless-robot-426711-j3-tfstate" # create in GCS beforehand
     prefix  = "gcp-sentiment-api/state"
   }
 }
