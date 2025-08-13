@@ -10,7 +10,7 @@ terraform {
   }
 }
 
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_service" "sentiment_api" {
   name     = var.app_name
   location = var.region
 
@@ -39,4 +39,12 @@ resource "google_cloud_run_service" "default" {
     delete = "5m"
   }
 }
+
+resource "google_cloud_run_service_iam_member" "public_invoker" {
+  service  = google_cloud_run_service.sentiment_api.name
+  location = google_cloud_run_service.sentiment_api.location
+  role     = "roles/run.invoker"
+  member   = var.cloudrun_invoker
+}
+
 

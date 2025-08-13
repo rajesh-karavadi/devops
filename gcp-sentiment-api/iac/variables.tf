@@ -26,6 +26,6 @@ variable "image" {}
 # variable "deployer_permissions" {}
 # variable "invoker_role" {}
 #
-# variable "invoker" {}
+variable "cloudrun_invoker" {}
 # variable "deployer_role" {}
 
