@@ -10,6 +10,28 @@ variable "sa_name" {
   default = "terraform-cicd-dev"
 }
 
+# Bucket to store logs for the Terraform state bucket
+resource "google_storage_bucket" "terraform_state_logs" {
+  name                        = "${var.project_id}-tfstate-logs"
+  location                    = "US"
+  storage_class               = "STANDARD"
+  uniform_bucket_level_access = true
+  public_access_prevention    = "enforced"
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    condition {
+      age = 90
+    }
+    action {
+      type = "Delete"
+    }
+  }
+}
+
 # Create GCS bucket for remote state
 resource "google_storage_bucket" "terraform_state" {
   name          = var.bucket_name
@@ -20,7 +42,10 @@ resource "google_storage_bucket" "terraform_state" {
   uniform_bucket_level_access = true
 
   public_access_prevention = "enforced"
-
+  logging {
+    log_bucket        = google_storage_bucket.terraform_state_logs.name
+    log_object_prefix = "access-logs"
+  }
   versioning {
     enabled = true
   }
