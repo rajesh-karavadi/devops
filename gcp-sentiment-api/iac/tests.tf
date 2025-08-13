@@ -1,12 +1,12 @@
 
 
 # 1️⃣ Workload Identity Pool
-resource "google_iam_workload_identity_pool" "github_pool" {
-  project       = var.project_id
-  workload_identity_pool_id = "github-pool"
-  display_name  = "GitHub Actions Pool"
-  description   = "Trust for GitHub Actions OIDC"
-}
+# resource "google_iam_workload_identity_pool" "github_pool" {
+#   project       = var.project_id
+#   workload_identity_pool_id = "github-pool"
+#   display_name  = "GitHub Actions Pool"
+#   description   = "Trust for GitHub Actions OIDC"
+# }
 #
 # # 2️⃣ Workload Identity Provider
 # resource "google_iam_workload_identity_pool_provider" "github_provider" {
