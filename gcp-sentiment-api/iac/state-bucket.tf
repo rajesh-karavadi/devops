@@ -3,7 +3,7 @@ variable "location" {
 }
 
 variable "bucket_name" {
-  default = "terraform-state-dev-bucket"
+  default = "terraform-state-dev"
 }
 
 variable "sa_name" {
