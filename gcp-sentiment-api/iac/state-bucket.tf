@@ -36,23 +36,23 @@ variable "sa_name" {
 # }
 
 # Create GCS bucket for remote state
-resource "google_storage_bucket" "terraform_state" {
-  name          = "${var.project_id}-tfstate"
-  location      = var.location
-  project       = var.project_id
-  force_destroy = false
-
-  uniform_bucket_level_access = true
-
-  public_access_prevention = "enforced"
-  logging {
-    log_bucket        = google_storage_bucket.terraform_state_logs.name
-    log_object_prefix = "access-logs"
-  }
-  versioning {
-    enabled = true
-  }
-}
+# resource "google_storage_bucket" "terraform_state" {
+#   name          = "${var.project_id}-tfstate"
+#   location      = var.location
+#   project       = var.project_id
+#   force_destroy = false
+#
+#   uniform_bucket_level_access = true
+#
+#   public_access_prevention = "enforced"
+#   logging {
+#     log_bucket        = google_storage_bucket.terraform_state_logs.name
+#     log_object_prefix = "access-logs"
+#   }
+#   versioning {
+#     enabled = true
+#   }
+# }
 
 # Grant the service account permissions on the bucket
 resource "google_storage_bucket_iam_member" "sa_bucket_access" {
@@ -60,3 +60,4 @@ resource "google_storage_bucket_iam_member" "sa_bucket_access" {
   role   = "roles/storage.objectAdmin"
   member = "serviceAccount:${var.sa_name}@${var.project_id}.iam.gserviceaccount.com"
 }
+
