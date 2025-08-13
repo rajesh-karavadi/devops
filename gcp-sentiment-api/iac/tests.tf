@@ -1,44 +1,24 @@
-
-
-# 1️⃣ Workload Identity Pool
-# resource "google_iam_workload_identity_pool" "github_pool" {
-#   project       = var.project_id
-#   workload_identity_pool_id = "github-pool"
-#   display_name  = "GitHub Actions Pool"
-#   description   = "Trust for GitHub Actions OIDC"
-# }
-#
-# # 2️⃣ Workload Identity Provider
-# resource "google_iam_workload_identity_pool_provider" "github_provider" {
-#   project        = var.project_id
-#   workload_identity_pool_id = google_iam_workload_identity_pool.github_pool.workload_identity_pool_id
-#   display_name   = "GitHub OIDC Provider"
-#
-#   attribute_condition = "attribute.from.subject == \"${var.cicd_sa_email}\""
-# }
-
-# 3️⃣ Service Account for Terraform
-resource "google_service_account" "terraform_sa" {
-  project      = var.project_id
-  account_id   = "terraform-cicd"
-  display_name = "Terraform GitHub Actions"
+# Define the Google Cloud provider
+provider "google" {
+  project = var.project_id # Replace with your GCP project ID
+  region  = "us-central1"
 }
 
-# 4️⃣ Grant Minimal Roles (adjust as needed)
-# resource "google_project_iam_member" "terraform_roles" {
-#   for_each = toset([
-#     "roles/storage.admin",       # Example: GCS for Terraform backend
-#     "roles/compute.admin",       # Example: Compute
-#     "roles/iam.serviceAccountUser" # Needed for impersonating other SAs
-#   ])
-#   project = var.project_id
-#   role    = each.value
-#   member  = "serviceAccount:${google_service_account.terraform_sa.email}"
-# }
+# Create a Google Cloud service account
+resource "google_service_account" "my_service_account" {
+  account_id   = "my-terraform-sa"
+  display_name = "Service Account for Terraform Management"
+  description  = "This service account is used by Terraform to manage resources."
+}
 
-# 5️⃣ Allow GitHub to Impersonate this SA
-# resource "google_service_account_iam_member" "wif_binding" {
-#   service_account_id = google_service_account.terraform_sa.name
-#   role               = "roles/iam.workloadIdentityUser"
-#   member             = "principalSet://iam.googleapis.com/projects/${var.project_number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.github_pool.workload_identity_pool_id}/attribute.repository/${var.github_repo}"
-# }
+# Grant an IAM role to the service account
+resource "google_project_iam_member" "service_account_role" {
+  project = var.project_id # Replace with your GCP project ID
+  role    = "roles/storage.admin" # Example role: Storage Admin
+  member  = "serviceAccount:${google_service_account.my_service_account.email}"
+}
+
+# Output the service account email
+output "service_account_email" {
+  value = google_service_account.my_service_account.email
+}
