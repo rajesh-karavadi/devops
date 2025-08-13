@@ -30,6 +30,9 @@ resource "google_storage_bucket" "terraform_state_logs" {
       type = "Delete"
     }
   }
+  logging {
+    log_bucket = "mylovelybucket"
+  }
 }
 
 # Create GCS bucket for remote state
