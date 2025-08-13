@@ -37,8 +37,8 @@ resource "google_service_account" "terraform_sa" {
 # }
 
 # 5️⃣ Allow GitHub to Impersonate this SA
-resource "google_service_account_iam_member" "wif_binding" {
-  service_account_id = google_service_account.terraform_sa.name
-  role               = "roles/iam.workloadIdentityUser"
-  member             = "principalSet://iam.googleapis.com/projects/${var.project_number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.github_pool.workload_identity_pool_id}/attribute.repository/${var.github_repo}"
-}
+# resource "google_service_account_iam_member" "wif_binding" {
+#   service_account_id = google_service_account.terraform_sa.name
+#   role               = "roles/iam.workloadIdentityUser"
+#   member             = "principalSet://iam.googleapis.com/projects/${var.project_number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.github_pool.workload_identity_pool_id}/attribute.repository/${var.github_repo}"
+# }

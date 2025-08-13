@@ -5,7 +5,7 @@
 # variable "bucket_location" {}
 # variable "cicd_user" {}
 #
-# variable "cicd_sa_email" {}
+variable "cicd_sa_email" {}
 # variable "deployer_permissions" {}
 # variable "invoker_role" {}
 #
