@@ -56,7 +56,7 @@ variable "sa_name" {
 
 # Grant the service account permissions on the bucket
 resource "google_storage_bucket_iam_member" "sa_bucket_access" {
-  bucket = google_storage_bucket.terraform_state.name
+  bucket = "${var.project_id}-tfstate"
   role   = "roles/storage.objectAdmin"
   member = "serviceAccount:${var.sa_name}@${var.project_id}.iam.gserviceaccount.com"
 }
