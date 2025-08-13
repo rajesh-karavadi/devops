@@ -33,10 +33,12 @@ jobs:
       - name: 📥 Checkout Repository
         uses: actions/checkout@v3
 
-      - name: 🔐 Authenticate with Google Cloud
+      - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          token_format: access_token
+          workload_identity_provider: "projects/780205355835/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+          service_account: "terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com"
 
       - name: IaC Scan with Checkov
         uses: bridgecrewio/checkov-action@master
@@ -44,19 +46,11 @@ jobs:
           directory: ./gcp-sentiment-api/iac
           quiet: true
 
-      - name: 📝 Write GCP Credentials to key.json
-        run: echo '${{ secrets.GCP_CREDENTIALS }}' > key.json
-
       - name: 🔄 Delete existing Cloud Run service (if any)
         run: |
           gcloud run services delete $APP_NAME \
             --region=$REGION \
             --quiet || echo "No existing service to delete"
-
-      - name: Create backend config
-        run: |
-          echo "bucket  = \"my-terraform-state-bucket\"" > backend.hcl
-          echo "prefix  = \"gcp-sentiment-api/state\"" >> backend.hcl
 
       - name: 🧰 Set up Terraform
         uses: hashicorp/setup-terraform@v3
