@@ -60,4 +60,3 @@ resource "google_storage_bucket_iam_member" "sa_bucket_access" {
   role   = "roles/storage.objectAdmin"
   member = "serviceAccount:${var.sa_name}@${var.project_id}.iam.gserviceaccount.com"
 }
-
