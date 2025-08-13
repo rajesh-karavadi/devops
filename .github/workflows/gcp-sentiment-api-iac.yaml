@@ -36,6 +36,11 @@ jobs:
       - name: 📥 Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Debug OIDC vars
+        run: |
+          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
+          echo "ACTIONS_ID_TOKEN_REQUEST_URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
+
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
@@ -43,10 +48,6 @@ jobs:
           workload_identity_provider: "projects/780205355835/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
           service_account: "terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com"
 
-      - name: Debug OIDC vars
-        run: |
-          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
-          echo "ACTIONS_ID_TOKEN_REQUEST_URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
 
       - name: IaC Scan with Checkov
         uses: bridgecrewio/checkov-action@master
