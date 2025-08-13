@@ -2,7 +2,7 @@ name: GCP-Sentiment-API-Destroy-Wf
 
 on:
   schedule:
-    - cron: "30 18 * * *" # Runs every day at 18:30 UTC (12:00 AM IST next day)
+    - cron: "40 18 * * *" # Runs every day at 18:30 UTC (12:00 AM IST next day)
   workflow_dispatch:
 
 defaults:
@@ -18,25 +18,42 @@ jobs:
     name: GCP Sentiment API Destroy Workflow
     runs-on: ubuntu-latest
 
+    # ✅ Required for OIDC authentication
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
       - name: 📥 Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: 🔐 Authenticate with Google Cloud
+      - name: 🔑 Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          token_format: access_token
+          workload_identity_provider: "projects/780205355835/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+          service_account: "terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com"
 
-      - name: 🧰 Set up Terraform
+      - name: 🧰 Install Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.6.6
 
-      - name: 📝 Write GCP Credentials to key.json
-        run: echo '${{ secrets.GCP_CREDENTIALS }}' > key.json
+      - name: 🔄 Delete existing Cloud Run service (if any)
+        run: |
+          gcloud run services delete "$APP_NAME" \
+            --region="$REGION" \
+            --quiet || echo "No existing service to delete"
 
-      - name: Terraform Init
+      - name: 📦 Terraform Init
         run: terraform init
 
-      - name: Terraform Destroy
-        run: terraform destroy -var-file=dev.tfvars -auto-approve
+      - name: ✅ Terraform Validate
+        run: terraform validate
+
+      - name: 📋 Terraform Plan
+        run: terraform plan -input=false -var-file=dev.tfvars
+
+      - name: 🚀 Terraform Destroy
+        if: github.ref == 'refs/heads/main'
+        run: terraform destroy -auto-approve -input=false -var-file=dev.tfvars
