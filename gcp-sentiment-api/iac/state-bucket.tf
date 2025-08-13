@@ -37,7 +37,7 @@ resource "google_storage_bucket" "terraform_state_logs" {
 
 # Create GCS bucket for remote state
 resource "google_storage_bucket" "terraform_state" {
-  name          = var.bucket_name
+  name          = "${var.project_id}-tfstate"
   location      = var.location
   project       = var.project_id
   force_destroy = false
