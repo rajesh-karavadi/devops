@@ -1,14 +1,3 @@
-variable "location" {
-  default = "us-central1"
-}
-
-variable "bucket_name" {
-  default = "tf-state-dev"
-}
-
-variable "sa_name" {
-  default = "terraform-cicd-dev"
-}
 
 # Bucket to store logs for the Terraform state bucket
 # resource "google_storage_bucket" "terraform_state_logs" {
@@ -57,7 +46,7 @@ variable "sa_name" {
 # Grant the service account permissions on the bucket
 resource "google_storage_bucket_iam_member" "sa_bucket_access" {
   bucket = "${var.project_id}-tfstate"
-  role   = "roles/storage.objectAdmin"
+  role   = "roles/storage.${var.storage_role}"
   member = "serviceAccount:${var.sa_name}@${var.project_id}.iam.gserviceaccount.com"
 }
 
