@@ -21,35 +21,35 @@ env:
   APP_NAME: gcp-sentiment-api
   REGION: us-east1
   IMAGE_URL: docker.io/rajeshkrvd/gcp-sentiment-api:1.1.6
+  TF_LOG: INFO
 
 jobs:
   terraform:
     name: GCP Sentiment API IaC Workflow
     runs-on: ubuntu-latest
+
+    # ✅ Required for OIDC authentication
     permissions:
-      contents: read
       id-token: write
-    env:
-      TF_LOG: INFO
+      contents: read
 
     steps:
       - name: 📥 Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Debug OIDC vars
-        run: |
-          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN: $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
-          echo "ACTIONS_ID_TOKEN_REQUEST_URL: $ACTIONS_ID_TOKEN_REQUEST_URL"
-
-      - name: Authenticate to Google Cloud
+      - name: 🔑 Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
           token_format: access_token
           workload_identity_provider: "projects/780205355835/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
           service_account: "terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com"
 
+      - name: 🧰 Install Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
 
-      - name: IaC Scan with Checkov
+      - name: 🛡️ IaC Scan with Checkov
         uses: bridgecrewio/checkov-action@master
         with:
           directory: ./gcp-sentiment-api/iac
@@ -57,24 +57,19 @@ jobs:
 
       - name: 🔄 Delete existing Cloud Run service (if any)
         run: |
-          gcloud run services delete $APP_NAME \
-            --region=$REGION \
+          gcloud run services delete "$APP_NAME" \
+            --region="$REGION" \
             --quiet || echo "No existing service to delete"
 
-      - name: 🧰 Set up Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.6.6
-
-      - name: Terraform Init
+      - name: 📦 Terraform Init
         run: terraform init -backend-config=backend.hcl
 
-      - name: Terraform Validate
+      - name: ✅ Terraform Validate
         run: terraform validate
 
-      - name: Terraform Plan
+      - name: 📋 Terraform Plan
         run: terraform plan -input=false -var-file=dev.tfvars
 
-      - name: Terraform Apply
+      - name: 🚀 Terraform Apply
         if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve -input=false -var-file=dev.tfvars
