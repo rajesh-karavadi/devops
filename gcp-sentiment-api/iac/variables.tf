@@ -18,6 +18,8 @@ variable "sa_name" {
 variable "region" {}
 variable "app_name" {}
 variable "image" {}
+variable "cloudrun_invoker" {}
+
 # variable "bucket_name" {}
 # variable "bucket_location" {}
 # variable "cicd_user" {}
@@ -26,6 +28,6 @@ variable "image" {}
 # variable "deployer_permissions" {}
 # variable "invoker_role" {}
 #
-variable "cloudrun_invoker" {}
+
 # variable "deployer_role" {}
 

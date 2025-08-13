@@ -194,6 +194,146 @@ Updated workload identity pool provider [github-provider].
 name: projects/780205355835/locations/global/workloadIdentityPools/github-pool/providers/github-provider/operations/bigarimt6pcamehywoq5iaq000000000
 
 
+gcloud projects add-iam-policy-binding peerless-robot-426711-j3 \
+--member="serviceAccount:terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com" \
+--role="roles/run.admin"
+
+# Allow it to act as the Cloud Run service account (needed for deploy)
+gcloud projects add-iam-policy-binding peerless-robot-426711-j3 \
+--member="serviceAccount:terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com" \
+--role="roles/iam.serviceAccountUser"
+Updated IAM policy for project [peerless-robot-426711-j3].
+bindings:
+- members:
+    - serviceAccount:service-780205355835@gcp-sa-artifactregistry.iam.gserviceaccount.com
+      role: roles/artifactregistry.admin
+- members:
+    - serviceAccount:service-780205355835@gcp-sa-artifactregistry.iam.gserviceaccount.com
+      role: roles/artifactregistry.serviceAgent
+- members:
+    - serviceAccount:github-actions-deployer@peerless-robot-426711-j3.iam.gserviceaccount.com
+      role: roles/artifactregistry.writer
+- members:
+    - serviceAccount:service-780205355835@compute-system.iam.gserviceaccount.com
+      role: roles/compute.serviceAgent
+- members:
+    - serviceAccount:service-780205355835@containerregistry.iam.gserviceaccount.com
+      role: roles/containerregistry.ServiceAgent
+- members:
+    - serviceAccount:780205355835-compute@developer.gserviceaccount.com
+    - serviceAccount:780205355835@cloudservices.gserviceaccount.com
+    - serviceAccount:terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com
+      role: roles/editor
+- members:
+    - deleted:serviceAccount:terraform-bootstrap@peerless-robot-426711-j3.iam.gserviceaccount.com?uid=103303276800277675908
+      role: roles/iam.serviceAccountAdmin
+- members:
+    - serviceAccount:github-actions-deployer@peerless-robot-426711-j3.iam.gserviceaccount.com
+    - serviceAccount:terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com
+      role: roles/iam.serviceAccountUser
+- members:
+    - user:rajesh.krvd@gmail.com
+      role: roles/owner
+- members:
+    - serviceAccount:service-780205355835@gcp-sa-pubsub.iam.gserviceaccount.com
+      role: roles/pubsub.serviceAgent
+- members:
+    - deleted:serviceAccount:terraform-bootstrap@peerless-robot-426711-j3.iam.gserviceaccount.com?uid=103303276800277675908
+      role: roles/resourcemanager.projectIamAdmin
+- members:
+    - serviceAccount:github-actions-deployer@peerless-robot-426711-j3.iam.gserviceaccount.com
+    - serviceAccount:terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com
+      role: roles/run.admin
+- members:
+    - serviceAccount:service-780205355835@serverless-robot-prod.iam.gserviceaccount.com
+      role: roles/run.serviceAgent
+- members:
+    - deleted:serviceAccount:terraform-bootstrap@peerless-robot-426711-j3.iam.gserviceaccount.com?uid=103303276800277675908
+    - serviceAccount:github-actions-deployer@peerless-robot-426711-j3.iam.gserviceaccount.com
+      role: roles/storage.admin
+      etag: BwY8Q0wp7qo=
+      version: 1
+      Updated IAM policy for project [peerless-robot-426711-j3].
+      bindings:
+- members:
+    - serviceAccount:service-780205355835@gcp-sa-artifactregistry.iam.gserviceaccount.com
+      role: roles/artifactregistry.admin
+- members:
+    - serviceAccount:service-780205355835@gcp-sa-artifactregistry.iam.gserviceaccount.com
+      role: roles/artifactregistry.serviceAgent
+- members:
+    - serviceAccount:github-actions-deployer@peerless-robot-426711-j3.iam.gserviceaccount.com
+      role: roles/artifactregistry.writer
+- members:
+    - serviceAccount:service-780205355835@compute-system.iam.gserviceaccount.com
+      role: roles/compute.serviceAgent
+- members:
+    - serviceAccount:service-780205355835@containerregistry.iam.gserviceaccount.com
+      role: roles/containerregistry.ServiceAgent
+- members:
+    - serviceAccount:780205355835-compute@developer.gserviceaccount.com
+    - serviceAccount:780205355835@cloudservices.gserviceaccount.com
+    - serviceAccount:terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com
+      role: roles/editor
+- members:
+    - deleted:serviceAccount:terraform-bootstrap@peerless-robot-426711-j3.iam.gserviceaccount.com?uid=103303276800277675908
+      role: roles/iam.serviceAccountAdmin
+- members:
+    - serviceAccount:github-actions-deployer@peerless-robot-426711-j3.iam.gserviceaccount.com
+    - serviceAccount:terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com
+      role: roles/iam.serviceAccountUser
+- members:
+    - user:rajesh.krvd@gmail.com
+      role: roles/owner
+- members:
+    - serviceAccount:service-780205355835@gcp-sa-pubsub.iam.gserviceaccount.com
+      role: roles/pubsub.serviceAgent
+- members:
+    - deleted:serviceAccount:terraform-bootstrap@peerless-robot-426711-j3.iam.gserviceaccount.com?uid=103303276800277675908
+      role: roles/resourcemanager.projectIamAdmin
+- members:
+    - serviceAccount:github-actions-deployer@peerless-robot-426711-j3.iam.gserviceaccount.com
+    - serviceAccount:terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com
+      role: roles/run.admin
+- members:
+    - serviceAccount:service-780205355835@serverless-robot-prod.iam.gserviceaccount.com
+      role: roles/run.serviceAgent
+- members:
+    - deleted:serviceAccount:terraform-bootstrap@peerless-robot-426711-j3.iam.gserviceaccount.com?uid=103303276800277675908
+    - serviceAccount:github-actions-deployer@peerless-robot-426711-j3.iam.gserviceaccount.com
+      role: roles/storage.admin
+      etag: BwY8Q0yRRBw=
+      version: 1
+
+gcloud run services describe gcp-sentiment-api --region=us-east1 --project=peerless-robot-426711-j3
++ Service gcp-sentiment-api in region us-east1
+  goog-terraform-provisioned:true
+
+URL:     https://gcp-sentiment-api-780205355835.us-east1.run.app
+Ingress: all
+Traffic:
+100% LATEST (currently gcp-sentiment-api-00001-7hc)
+
+Scaling: Auto (Min: 0)
+
+Last updated on 2025-08-13T18:23:55.709577Z by terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com:
+Revision gcp-sentiment-api-00001-7hc
+Container None
+Image:           docker.io/rajeshkrvd/gcp-sentiment-api:1.1.6
+Port:            8080
+Memory:          512Mi
+CPU:             1000m
+Startup Probe:
+TCP every 240s
+Port:          8080
+Initial delay: 0s
+Timeout:       240s
+Failure threshold: 1
+Type:          Default
+Service account:   780205355835-compute@developer.gserviceaccount.com
+Concurrency:       80
+Max instances:     3
+Timeout:           300s
 
 
 
