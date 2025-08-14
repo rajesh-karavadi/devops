@@ -1,5 +1,5 @@
 project_id                = "peerless-robot-426711-j3"
 region                    = "us-east1"
 app_name                  = "gcp-sentiment-api"
-image                     = "docker.io/rajeshkrvd/gcp-sentiment-api:1.1.8"
+image                     = "docker.io/rajeshkrvd/gcp-sentiment-api:1.1.9"
 cloudrun_invoker          = "allUsers"
