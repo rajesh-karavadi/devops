@@ -15,13 +15,8 @@ defaults:
     working-directory: gcp-sentiment-api/iac
 
 env:
-  TF_BUCKET: tf-state-myproj
-  TF_STATE_PREFIX: env/dev
-  PROJECT_ID: peerless-robot-426711-j3
   APP_NAME: gcp-sentiment-api
   REGION: us-east1
-  IMAGE_URL: docker.io/rajeshkrvd/gcp-sentiment-api:1.1.6
-  TF_LOG: INFO
 
 jobs:
   terraform:
