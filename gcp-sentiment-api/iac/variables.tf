@@ -19,15 +19,3 @@ variable "region" {}
 variable "app_name" {}
 variable "image" {}
 variable "cloudrun_invoker" {}
-
-# variable "bucket_name" {}
-# variable "bucket_location" {}
-# variable "cicd_user" {}
-#
-# variable "cicd_sa_email" {}
-# variable "deployer_permissions" {}
-# variable "invoker_role" {}
-#
-
-# variable "deployer_role" {}
-
