@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-Time Sentiment Dashboard</title>
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+        .tweet { padding: 10px; margin: 10px 0; border-radius: 8px; }
+        .positive { background: #d4edda; }
+        .negative { background: #f8d7da; }
+        .neutral { background: #fff3cd; }
+    </style>
+</head>
+<body>
+<h1>📊 Real-Time Sentiment Analysis</h1>
+<div id="tweets"></div>
+
+<script>
+    const socket = io();
+    const tweetsDiv = document.getElementById('tweets');
+
+    socket.on('new_tweet', (data) => {
+        const div = document.createElement('div');
+        div.className = `tweet ${data.sentiment}`;
+        div.innerHTML = `<strong>${data.sentiment.toUpperCase()}</strong>: ${data.text}`;
+        tweetsDiv.prepend(div);
+    });
+</script>
+</body>
+</html>
