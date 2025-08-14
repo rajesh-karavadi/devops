@@ -14,7 +14,7 @@ defaults:
     working-directory: gcp-sentiment-api/app
 
 env:
-  IMAGE_TAG: 1.1.8
+  IMAGE_TAG: 1.1.9
   APP_NAME: gcp-sentiment-api
 
 jobs:
