@@ -39,13 +39,6 @@ jobs:
       - name: Show pip version
         run: python -m pip show pip
 
-      - name: 🔑 Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          token_format: access_token
-          workload_identity_provider: "projects/780205355835/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
-          service_account: "terraform-cicd-dev@peerless-robot-426711-j3.iam.gserviceaccount.com"
-
       - name: 🐳 Login to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
