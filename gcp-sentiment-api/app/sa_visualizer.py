@@ -26,7 +26,7 @@ def fetch_news(symbol: str, finhub_key: str):
         "symbol": symbol,
         "from": yesterday,
         "to": today,
-        "token": finhub_key
+        "token": API_KEY
     }
 
     response = requests.get(url, params=params)
@@ -68,9 +68,9 @@ def sentiment_chart():
     logging.info("Entered into sentiment_chart....")
     logging.info(f"gcp_credentials: {gcp_credentials}, finhub_key: {finhub_key}")
 
-    if not finhub_key:
-        raise ValueError("❌ API key not found! Did you set FINNHUB_API_KEY in GitHub Secrets?")
-    
+    # if not finhub_key:
+    #     raise ValueError("❌ API key not found! Did you set FINNHUB_API_KEY in GitHub Secrets?")
+    #
     symbol = request.args.get("symbol", "AAPL").upper()
 
     # Fetch + analyze

@@ -14,7 +14,7 @@ defaults:
     working-directory: gcp-sentiment-api/app
 
 env:
-  IMAGE_TAG: 1.2.4
+  IMAGE_TAG: 1.2.5
   APP_NAME: gcp-sentiment-api
   FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
 
