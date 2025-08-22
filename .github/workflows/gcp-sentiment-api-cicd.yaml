@@ -16,6 +16,7 @@ defaults:
 env:
   IMAGE_TAG: 1.1.9
   APP_NAME: gcp-sentiment-api
+  FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
 
 jobs:
   deploy:
