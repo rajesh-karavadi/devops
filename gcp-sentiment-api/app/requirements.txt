@@ -6,3 +6,4 @@ plotly
 datetime
 
 pip>=23.3
+setuptools>=70.0.0
