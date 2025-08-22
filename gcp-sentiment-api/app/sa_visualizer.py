@@ -6,6 +6,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import plotly.express as px
 from flask import Flask, render_template_string
 from datetime import datetime, timedelta
+import logging
 
 # Flask app
 app = Flask(__name__)
@@ -14,6 +15,8 @@ app = Flask(__name__)
 API_KEY = "d2i9sehr01qgfkrlao80d2i9sehr01qgfkrlao8g"
 
 def fetch_news(symbol: str, finhub_key: str):
+    logging.info("Home endpoint hit.....")
+
     """Fetch latest Apple news from Finnhub"""
     url = "https://finnhub.io/api/v1/company-news"
     yesterday = (datetime.now() - timedelta(days=10)).strftime("%Y-%m-%d")
@@ -45,6 +48,8 @@ def fetch_news(symbol: str, finhub_key: str):
     return df
 
 def analyze_sentiment(df):
+    logging.info("Analyze data .....")
+
     """Run VADER sentiment analysis"""
     analyzer = SentimentIntensityAnalyzer()
     df["sentiment"] = df["headline"].apply(
@@ -55,10 +60,13 @@ def analyze_sentiment(df):
 
 @app.route("/fetch")
 def sentiment_chart():
+    logging.info("Entered into sentiment_chart....")
 
     finhub_key = os.getenv("FINNHUB_API_KEY")
     gcp_credentials = os.getenv("GCP_CREDENTIALS")
     print(f"API Key: '{gcp_credentials}'")
+    logging.info("Entered into sentiment_chart....")
+    logging.info(f"gcp_credentials: {gcp_credentials}, finhub_key: {finhub_key}")
 
     if not finhub_key:
         raise ValueError("❌ API key not found! Did you set FINNHUB_API_KEY in GitHub Secrets?")
