@@ -57,7 +57,9 @@ def analyze_sentiment(df):
 def sentiment_chart():
 
     finhub_key = os.getenv("FINNHUB_API_KEY")
-    
+    gcp_credentials = os.getenv("GCP_CREDENTIALS")
+    print(f"API Key: '{gcp_credentials}'")
+
     if not finhub_key:
         raise ValueError("❌ API key not found! Did you set FINNHUB_API_KEY in GitHub Secrets?")
     
