@@ -58,7 +58,7 @@ def analyze_sentiment(df):
     daily = df.groupby("date")["sentiment"].mean().reset_index()
     return daily
 
-@app.route("/fetch")
+@app.route("/analyse")
 def sentiment_chart():
     logging.info("Entered into sentiment_chart....")
 
